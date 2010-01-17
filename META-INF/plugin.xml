@@ -1,53 +1,54 @@
 <!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
 <idea-plugin url="http://www.digitalsanctum.com/buildr-plug-in/">
-    <id>Buildr</id>
-    <name>Buildr</name>
-    <category>Build</category>
-    <description>
-        <![CDATA[A plug-in for the Buildr build system. You must <a href="http://incubator.apache.org/buildr/getting_started.html#installing_buildr">install Buildr</a> prior to installing the plug-in.]]></description>
-    <version>9.0.0</version>
-    <change-notes><![CDATA[ <a href="http://www.digitalsanctum.com/buildr-plug-in/">Change log</a> ]]></change-notes>
-    <vendor email="shane@digitalsanctum.com" url="http://www.digitalsanctum.com">Digital Sanctum, Inc.</vendor>
-    <idea-version since-build="93.1"/>
-    <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
+  <id>Buildr</id>
+  <name>Buildr</name>
+  <category>Build</category>
+  <description>
+    <![CDATA[A plug-in for the Buildr build system. You must <a href="http://buildr.apache.org/">install Buildr</a> prior to installing the plug-in.]]></description>
+  <version>9.0.0</version>
+  <change-notes><![CDATA[ Updated for IDEA 9x (Thanks to <a href="http://github.com/sblundy/buildr-plugin">sblundy</a>) ]]></change-notes>
+  <vendor email="shane@digitalsanctum.com" url="http://www.digitalsanctum.com">Digital Sanctum, Inc.</vendor>
+  <idea-version since-build="93.1"/>
+  <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <!--<errorHandler implementation="com.digitalsanctum.idea.plugins.buildr.error.BuildrErrorReportSubmitter"/>-->
-        <applicationService serviceInterface="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"
-                            serviceImplementation="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"/>
-        <configurationType implementation="com.digitalsanctum.idea.plugins.buildr.execution.BuildrConfigurationType"/>
-        <stepsBeforeRunProvider implementation="com.digitalsanctum.idea.plugins.buildr.beforerun.BuildrBeforeRunTaskProvider"/>
-    </extensions>
+  <extensions defaultExtensionNs="com.intellij">
+    <!--<errorHandler implementation="com.digitalsanctum.idea.plugins.buildr.error.BuildrErrorReportSubmitter"/>-->
+    <applicationService serviceInterface="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"
+                        serviceImplementation="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"/>
+    <configurationType implementation="com.digitalsanctum.idea.plugins.buildr.execution.BuildrConfigurationType"/>
+    <stepsBeforeRunProvider
+        implementation="com.digitalsanctum.idea.plugins.buildr.beforerun.BuildrBeforeRunTaskProvider"/>
+  </extensions>
 
-    <application-components>
-        <component>
-            <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.digitalsanctum.idea.plugins.buildr.settings.BuildrSettings</implementation-class>
-        </component>
-    </application-components>
+  <application-components>
+    <component>
+      <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrComponent</implementation-class>
+    </component>
+    <component>
+      <implementation-class>com.digitalsanctum.idea.plugins.buildr.settings.BuildrSettings</implementation-class>
+    </component>
+  </application-components>
 
-    <project-components>
-        <component>
-            <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrTasksListComponent</implementation-class>
-        </component>
-    </project-components>
+  <project-components>
+    <component>
+      <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent</implementation-class>
+    </component>
+    <component>
+      <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrTasksListComponent</implementation-class>
+    </component>
+  </project-components>
 
-    <actions>
-        <action id="BuildrVersion" class="com.digitalsanctum.idea.plugins.buildr.actions.BuildrVersionAction"
-                text="Buildr Version">
-            <add-to-group group-id="HelpMenu" anchor="last"/>
-        </action>
+  <actions>
+    <action id="BuildrVersion" class="com.digitalsanctum.idea.plugins.buildr.actions.BuildrVersionAction"
+            text="Buildr Version">
+      <add-to-group group-id="HelpMenu" anchor="last"/>
+    </action>
 
-        <group id="taskPaneToolbar">
-            <action id="refreshTaskList" class="com.digitalsanctum.idea.plugins.buildr.actions.RefreshTaskListAction"
-                    icon="/actions/sync.png"/>
-            <action id="runTask" class="com.digitalsanctum.idea.plugins.buildr.actions.RunTaskAction"
-                    icon="/actions/execute.png"/>
-        </group>
-    </actions>
+    <group id="taskPaneToolbar">
+      <action id="refreshTaskList" class="com.digitalsanctum.idea.plugins.buildr.actions.RefreshTaskListAction"
+              icon="/actions/sync.png"/>
+      <action id="runTask" class="com.digitalsanctum.idea.plugins.buildr.actions.RunTaskAction"
+              icon="/actions/execute.png"/>
+    </group>
+  </actions>
 </idea-plugin>
