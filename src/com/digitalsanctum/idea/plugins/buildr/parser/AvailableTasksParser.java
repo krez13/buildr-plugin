@@ -1,7 +1,6 @@
 package com.digitalsanctum.idea.plugins.buildr.parser;
 
 import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
-import com.intellij.openapi.diagnostic.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +11,6 @@ import java.util.List;
  * Time: 10:28:14 AM
  */
 public class AvailableTasksParser {
-
-  private static final Logger log = Logger.getInstance(AvailableTasksParser.class.getName());
-
   private static String test = "  artifacts             # Download all artifacts\n" +
       "  build                 # Build the project\n" +
       "  buildr:freeze         # Freeze the Buildfile so it always uses Buildr version 1.3.3\n" +
@@ -47,8 +43,7 @@ public class AvailableTasksParser {
     if (tasksOutput == null || tasksOutput.length() == 0) throw new IllegalArgumentException("tasksOutput was null!");
 
     List<BuildrTask> tasks = new ArrayList<BuildrTask>();
-    String newline = System.getProperty("line.separator");
-    String[] taskLine = tasksOutput.split(newline);
+    String[] taskLine = tasksOutput.split("[\r\n]+");
     for (String s : taskLine) {
       String[] nameDesc = s.split("#");
       if (nameDesc.length == 2) {
