@@ -8,7 +8,7 @@
     <version>9.0.0-luciad</version>
     <change-notes><![CDATA[ <a href="http://github.com/pepijnve/buildr-plugin/commits/master">Change log</a> ]]></change-notes>
     <vendor email="shane@digitalsanctum.com, pepijn.vaneeckhoudt@luciad.com"
-            logo="com/digitalsanctum/idea/plugins/buildr/buildr-16x16.png"
+            logo="/com/digitalsanctum/idea/plugins/buildr/buildr-16x16.png"
             url="http://github.com/pepijnve/buildr-plugin">Digital Sanctum, Inc. and Pepijn Van Eeckhoudt</vendor>
     <idea-version since-build="93.1"/>
     <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
