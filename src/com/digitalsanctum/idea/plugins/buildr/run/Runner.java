@@ -182,9 +182,9 @@ public class Runner {
                                                          @NotNull final String... arguments) {
     final GeneralCommandLine cmdLine = new GeneralCommandLine();
 
-    cmdLine.setExePath(VirtualFileUtil.convertToOSDependedPath(executablePath));
+    cmdLine.setExePath(VirtualFileUtil.convertToOSDependentPath(executablePath));
     if (workingDir != null) {
-      cmdLine.setWorkDirectory(VirtualFileUtil.convertToOSDependedPath(workingDir));
+      cmdLine.setWorkDirectory(VirtualFileUtil.convertToOSDependentPath(workingDir));
     }
     cmdLine.addParameters(arguments);
 
@@ -315,16 +315,8 @@ public class Runner {
       super(cancelable, null, title2, false, false);
     }
 
-    public SameThreadMode(@Nullable final String title2) {
-      this(true, title2);
-    }
-
     public SameThreadMode(final boolean cancelable) {
       this(cancelable, null);
-    }
-
-    public SameThreadMode() {
-      this(true);
     }
   }
 }
