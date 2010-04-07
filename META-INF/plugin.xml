@@ -4,10 +4,12 @@
     <name>Buildr</name>
     <category>Build</category>
     <description>
-        <![CDATA[A plug-in for the Buildr build system. You must <a href="http://incubator.apache.org/buildr/getting_started.html#installing_buildr">install Buildr</a> prior to installing the plug-in.]]></description>
-    <version>9.0.0</version>
-    <change-notes><![CDATA[ <a href="http://www.digitalsanctum.com/buildr-plug-in/">Change log</a> ]]></change-notes>
-    <vendor email="shane@digitalsanctum.com" url="http://www.digitalsanctum.com">Digital Sanctum, Inc.</vendor>
+        <![CDATA[A plug-in for the Buildr build system. You must <a href="http://buildr.apache.org/installing.html">install Buildr</a> prior to installing the plug-in.]]></description>
+    <version>9.0.0-luciad</version>
+    <change-notes><![CDATA[ <a href="http://github.com/pepijnve/buildr-plugin/commits/master">Change log</a> ]]></change-notes>
+    <vendor email="shane@digitalsanctum.com, pepijn.vaneeckhoudt@luciad.com"
+            logo="com/digitalsanctum/idea/plugins/buildr/buildr-16x16.png"
+            url="http://github.com/pepijnve/buildr-plugin">Digital Sanctum, Inc. and Pepijn Van Eeckhoudt</vendor>
     <idea-version since-build="93.1"/>
     <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
 
