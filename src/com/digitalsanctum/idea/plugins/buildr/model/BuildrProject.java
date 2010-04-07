@@ -98,7 +98,7 @@ public class BuildrProject implements Buildr {
 
 
     List<BuildrTask> tasks = new ArrayList<BuildrTask>();
-    if (buildrRunner.hasErrors()) {
+    if ( output.getExitCode() != 0 ) {
       System.err.println(output.getStderr());
       addError(new BuildrError(output.getStderr()));
     } else {      

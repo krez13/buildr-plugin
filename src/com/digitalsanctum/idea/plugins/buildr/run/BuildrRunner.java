@@ -32,7 +32,6 @@ public class BuildrRunner extends Runner implements Buildr {
 
   private BuildrProject buildrProject;
   private LinkedList<String> args;
-  private Output output;
 
   public BuildrRunner(BuildrProject buildrProject) {
     this.buildrProject = buildrProject;
@@ -84,7 +83,7 @@ public class BuildrRunner extends Runner implements Buildr {
       final String argument = "-e exec '" + TextUtil.concat(arguments) + "'";
       return Runner.execute(Runner.createAndSetupCmdLine(additionalPath, workingDirectory, null, argument));
     } catch (ExecutionException e) {
-      return new Output(TextUtil.EMPTY_STRING, e.getMessage());
+      return new Output(TextUtil.EMPTY_STRING, e.getMessage(), -1 );
     }
   }
 
@@ -106,23 +105,18 @@ public class BuildrRunner extends Runner implements Buildr {
 
     System.arraycopy(args.toArray(new String[args.size()]), 0, commands, 1, args.size());
 
+    Output output;
     try {
       output = Runner.runInPathAndShowErrors(buildrProject.getBaseDirPath(), buildrProject.getProject(), mode, true, "Buildr Error", commands);
     } catch (BuildrPluginException e) {
       LOG.error(BuildrBundle.message("error.buildr.exception"), e);
-      output = new Output(null, BuildrBundle.message("error.buildr.exception"));
+      output = new Output(null, BuildrBundle.message("error.buildr.exception"), -1 );
     }
 
     if (TextUtil.isEmpty(output.getStdout())) {
-      output = new Output(null, BuildrBundle.message("error.null.output"));
+      output = new Output(null, BuildrBundle.message("error.null.output"), output.getExitCode() );
     }
 
     return output;
   }
-
-  public boolean hasErrors() {
-    return output != null && output.getStderr().length() != 0;
-  }
-
-
 }

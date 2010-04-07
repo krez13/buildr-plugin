@@ -80,7 +80,7 @@ public class Runner {
 
     ExecutionHelper.executeExternalProcess(project, osProcessHandler, mode);
 
-    final Output output = new Output(out.toString(), err.toString());
+    final Output output = new Output(out.toString(), err.toString(), process.exitValue());
 
     if (showErrors && !TextUtil.isEmpty(output.getStderr())) {
       assert project != null;
@@ -163,7 +163,7 @@ public class Runner {
     osProcessHandler.startNotify();
     osProcessHandler.waitFor();
 
-    return new Output(out.toString(), err.toString());
+    return new Output(out.toString(), err.toString(), process.exitValue() );
   }
 
 
