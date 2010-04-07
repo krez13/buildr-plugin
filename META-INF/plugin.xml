@@ -43,9 +43,12 @@
             <add-to-group group-id="HelpMenu" anchor="last"/>
         </action>
 
-        <group id="taskPaneToolbar">
+        <group id="taskListToolbar">
             <action id="refreshTaskList" class="com.digitalsanctum.idea.plugins.buildr.actions.RefreshTaskListAction"
                     icon="/actions/sync.png"/>
+        </group>
+
+        <group id="commandToolbar">
             <action id="runTask" class="com.digitalsanctum.idea.plugins.buildr.actions.RunTaskAction"
                     icon="/actions/execute.png"/>
         </group>

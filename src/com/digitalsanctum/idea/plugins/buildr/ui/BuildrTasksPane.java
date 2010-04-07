@@ -4,6 +4,7 @@ import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent;
 import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
 import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
@@ -25,13 +26,14 @@ public class BuildrTasksPane implements Buildr {
     private static final Logger LOG = Logger.getInstance(BuildrTasksPane.class.getName());
     private JPanel tasksPanel;
     private JTextField commandTextField;
-    private JComponent toolbar;
+    private JComponent commandToolbar;
+    private JComponent taskListToolbar;
     private JList taskList;
 
     private BuildrProjectComponent buildrProject;
 
 
-    public BuildrTasksPane(BuildrProjectComponent buildrProject) {
+  public BuildrTasksPane(BuildrProjectComponent buildrProject) {
         this.buildrProject = buildrProject;
         this.commandTextField.addKeyListener(new KeyAdapter() {
             @Override
@@ -66,11 +68,13 @@ public class BuildrTasksPane implements Buildr {
     }
 
     private void createUIComponents() {
-        this.taskList = getTaskList();
+      this.taskList = getTaskList();
 
-        final DefaultActionGroup taskPaneToolbar =
-                ((DefaultActionGroup) ActionManager.getInstance().getAction("taskPaneToolbar"));
-        this.toolbar = ActionManager.getInstance().createActionToolbar("Buildr", taskPaneToolbar, true).getComponent();
+      ActionManager actionManager = ActionManager.getInstance();
+      final ActionGroup commandToolbar = ( ( ActionGroup ) actionManager.getAction("commandToolbar"));
+      this.commandToolbar = actionManager.createActionToolbar("Buildr", commandToolbar, true).getComponent();
+      final ActionGroup taskListToolbar = ( ( ActionGroup ) actionManager.getAction("taskListToolbar"));
+      this.taskListToolbar = actionManager.createActionToolbar("Buildr", taskListToolbar, true).getComponent();
     }
 
     public void refreshTaskList() {
