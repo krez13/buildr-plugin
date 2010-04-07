@@ -13,7 +13,7 @@ public interface Buildr {
 
   public static final String BUILDR = "/opt/local/bin/buildr";
   public static final String BUILDR_WINDOWS = "buildr.cmd";
-  public static final String VERSION_ARG = "-v";
+  public static final String VERSION_ARG = "--version";
   public static final String HELP_TASKS_ARG = "help:tasks";
   public static final String HELP_PROJECTS_ARG = "help:projects";
   public static final String[] BUILDFILES = {"buildfile", "Buildfile", "rakefile", "Rakefile", "rakefile.rb", "Rakefile.rb"};
