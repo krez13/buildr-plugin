@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.digitalsanctum.idea.plugins.buildr.ui.BuildrTasksPane">
-  <grid id="27dc6" binding="tasksPanel" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="tasksPanel" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
@@ -31,7 +31,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="9e330" class="javax.swing.JLabel">
+      <component id="9e330" class="javax.swing.JLabel" binding="commandLabel" custom-create="true">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="59" height="14"/>
@@ -41,7 +41,7 @@
           <text value="Command:"/>
         </properties>
       </component>
-      <component id="cdded" class="javax.swing.JLabel">
+      <component id="cdded" class="javax.swing.JLabel" binding="tasksLabel" custom-create="true">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="59" height="14"/>
@@ -53,7 +53,7 @@
       </component>
       <component id="2ce4f" class="javax.swing.JComponent" binding="commandToolbar" custom-create="true">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
       </component>
       <component id="4ef17" class="javax.swing.JComponent" binding="taskListToolbar" custom-create="true">

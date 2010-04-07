@@ -29,8 +29,10 @@ public class BuildrTasksPane implements Buildr {
     private JComponent commandToolbar;
     private JComponent taskListToolbar;
     private JList taskList;
+    private JLabel tasksLabel;
+    private JLabel commandLabel;
 
-    private BuildrProjectComponent buildrProject;
+  private BuildrProjectComponent buildrProject;
 
 
   public BuildrTasksPane(BuildrProjectComponent buildrProject) {
@@ -55,12 +57,10 @@ public class BuildrTasksPane implements Buildr {
 
         final MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                LOG.debug("in mouseClicked:" + e.getClickCount());
-                if (e.getClickCount() == 2) {
+                if (SwingUtilities.isLeftMouseButton( e ) && e.getClickCount() == 2) {
                     buildrProject.runTask(DataManager.getInstance().getDataContext(),
                             Arrays.asList((String) taskList.getSelectedValue()));
                 }
-                LOG.debug("end mouseClicked:" + e.getClickCount());
             }
         };
         taskList.addMouseListener(mouseListener);
@@ -69,6 +69,11 @@ public class BuildrTasksPane implements Buildr {
 
     private void createUIComponents() {
       this.taskList = getTaskList();
+
+      tasksLabel = new JLabel( "Tasks:" );
+      tasksLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ));
+      commandLabel = new JLabel( "Command:" );
+      commandLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ));
 
       ActionManager actionManager = ActionManager.getInstance();
       final ActionGroup commandToolbar = ( ( ActionGroup ) actionManager.getAction("commandToolbar"));
