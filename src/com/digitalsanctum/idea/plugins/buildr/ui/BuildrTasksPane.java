@@ -53,7 +53,7 @@ public class BuildrTasksPane implements Buildr {
     }
 
     private JList getTaskList() {
-        final JList taskList = new JList(new TaskListModel(buildrProject.getBuildrProject().getAvailableTasks()));
+        final JList taskList = new JList(new TaskListModel(Collections.<BuildrTask>emptyList()));
 
         final MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
