@@ -24,7 +24,7 @@
               <text value="Buildr Path"/>
             </properties>
           </component>
-          <component id="47fc8" class="javax.swing.JTextPane" binding="buildrPath">
+          <component id="f743" class="javax.swing.JTextField" binding="buildrPath">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>

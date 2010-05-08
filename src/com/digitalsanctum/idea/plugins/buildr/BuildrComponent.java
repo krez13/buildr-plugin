@@ -33,7 +33,7 @@ public class BuildrComponent implements ApplicationComponent, Buildr {
       output = buildrRunner.runBuildrCommand();
     } catch (BuildrPluginException e) {
       LOG.error(e);
-      output = new Output(null, "Buildr not available!");
+      output = new Output(null, "Buildr not available!", -1 );
     }
 
     StringBuilder sb = new StringBuilder();

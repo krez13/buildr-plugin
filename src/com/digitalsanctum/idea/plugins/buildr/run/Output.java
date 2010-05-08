@@ -8,10 +8,12 @@ package com.digitalsanctum.idea.plugins.buildr.run;
 public class Output {
   private String stdout;
   private String stderr;
+  private int exitCode;
 
-  public Output(String stdout, String stderr) {
+  public Output( String stdout, String stderr, int exitCode ) {
     this.stdout = stdout;
     this.stderr = stderr;
+    this.exitCode = exitCode;
   }
 
   public String getStdout() {
@@ -20,5 +22,9 @@ public class Output {
 
   public String getStderr() {
     return stderr;
+  }
+
+  public int getExitCode() {
+    return exitCode;
   }
 }

@@ -14,7 +14,7 @@ import java.awt.*;
  */
 public class GeneralSettingsTab implements UnnamedConfigurable {
   private JPanel myContentPane;
-  private JTextPane buildrPath;
+  private JTextField buildrPath;
 
   public Component getContentPanel() {
     return myContentPane;
