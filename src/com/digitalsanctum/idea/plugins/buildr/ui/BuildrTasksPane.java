@@ -6,7 +6,6 @@ import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.diagnostic.Logger;
 import org.apache.commons.lang.StringUtils;
 
@@ -68,7 +67,7 @@ public class BuildrTasksPane implements Buildr {
         final MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton( e ) && e.getClickCount() == 2) {
-                    buildrProject.runTask(DataManager.getInstance().getDataContext(),
+                    buildrProject.runTask(DataManager.getInstance().getDataContext((Component)e.getSource()),
                             Arrays.asList(((BuildrTask) taskList.getSelectedValue()).getName()));
                 }
             }

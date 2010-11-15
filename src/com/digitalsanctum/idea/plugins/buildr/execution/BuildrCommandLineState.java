@@ -9,7 +9,6 @@ import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.openapi.actionSystem.ex.DataConstantsEx;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 
@@ -28,7 +27,7 @@ public class BuildrCommandLineState extends CommandLineState {
     public BuildrCommandLineState(ExecutionEnvironment environment, List<String> tasks) {
         super(environment);
         this.tasks = tasks;
-        final Project project = (Project) environment.getDataContext().getData(DataConstantsEx.PROJECT);
+        final Project project = environment.getProject();
         assert project != null;
         this.buildrProject = project.getComponent(BuildrProjectComponent.class).getBuildrProject();
     }
