@@ -11,7 +11,7 @@ import java.util.List;
  * Time: 10:28:14 AM
  */
 public class AvailableTasksParser {
-  private static final String BUILDR_PREFIX = "Buildr ";
+  private static final String BUILDR_PREFIX = "[Bb]uildr ";
 
   public static List<BuildrTask> parseTasks(String tasksOutput) {
     if (tasksOutput == null || tasksOutput.length() == 0) throw new IllegalArgumentException("tasksOutput was null!");
