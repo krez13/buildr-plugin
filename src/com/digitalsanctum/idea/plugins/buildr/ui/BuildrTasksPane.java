@@ -11,6 +11,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,12 +55,21 @@ public class BuildrTasksPane implements Buildr {
 
     private JList getTaskList() {
         final JList taskList = new JList(new TaskListModel(Collections.<BuildrTask>emptyList()));
+        taskList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                BuildrTask task = (BuildrTask) value;
+                Component renderer = super.getListCellRendererComponent(list, task.getName(), index, isSelected, cellHasFocus);
+                ((JComponent) renderer).setToolTipText(task.getDescription());
+                return renderer;
+            }
+        });
 
         final MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton( e ) && e.getClickCount() == 2) {
                     buildrProject.runTask(DataManager.getInstance().getDataContext(),
-                            Arrays.asList((String) taskList.getSelectedValue()));
+                            Arrays.asList(((BuildrTask) taskList.getSelectedValue()).getName()));
                 }
             }
         };

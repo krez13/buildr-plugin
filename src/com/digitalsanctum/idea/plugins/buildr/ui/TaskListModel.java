@@ -11,11 +11,11 @@ import java.util.List;
 * Time: 9:42:08 PM
 */
 public class TaskListModel extends AbstractListModel {
-    final List<String> tasks = new java.util.ArrayList<String>();
+    final List<BuildrTask> tasks = new java.util.ArrayList<BuildrTask>();
 
     public TaskListModel(List<BuildrTask> bTasks) {
         for (BuildrTask buildrTask : bTasks) {
-            tasks.add(buildrTask.getName());
+            tasks.add(buildrTask);
         }
     }
 
