@@ -55,4 +55,12 @@ settingsTabbedPane.addTab(RBundle.message("settings.plugin.about.tab.title"),
     return false;
   }
 
+  public void validate() throws ConfigurationException {
+    for (int i = 0; i < configurableList.size(); i++) {
+      UnnamedConfigurable configurable = configurableList.get(i);
+      if ( configurable instanceof GeneralSettingsTab ) {
+        ((GeneralSettingsTab) configurable).validate();
+      }
+    }
+  }
 }

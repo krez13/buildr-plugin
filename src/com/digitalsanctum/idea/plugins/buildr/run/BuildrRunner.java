@@ -52,7 +52,7 @@ public class BuildrRunner extends Runner implements Buildr {
       commands[0] = BUILDR;
     }*/
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-    commands[0] = settings.buildrPath;
+    commands[0] = settings.getBuildrPath();
 
     System.arraycopy(args.toArray(new String[args.size()]), 0, commands, 1, args.size());
 
