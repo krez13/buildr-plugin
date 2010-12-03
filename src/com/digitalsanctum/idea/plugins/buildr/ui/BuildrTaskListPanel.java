@@ -2,6 +2,7 @@ package com.digitalsanctum.idea.plugins.buildr.ui;
 
 import com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.ui.components.JBList;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
@@ -19,16 +20,10 @@ public class BuildrTaskListPanel {
     public static final Logger LOG = Logger.getInstance(BuildrTaskListPanel.class.getName());
     private JTextField tasks;
     private JPanel panel;
-    private JList taskList;
-
-    private BuildrProjectComponent buildrProject;
+    private JBList taskList;
 
     public BuildrTaskListPanel(BuildrProjectComponent buildrProject) {
-        this.buildrProject = buildrProject;
-    }
-
-    private void createUIComponents() {
-        this.taskList = new JList(new TaskListModel(this.buildrProject.getBuildrProject().getAvailableTasks()));
+        this.taskList.setModel(new TaskListModel(buildrProject.getBuildrProject().getAvailableTasks()));
         this.taskList.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 LOG.info("event=" + e);
