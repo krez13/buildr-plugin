@@ -1,7 +1,9 @@
 package com.digitalsanctum.idea.plugins.buildr.settings;
 
+import com.digitalsanctum.idea.plugins.buildr.BuildrBundle;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.UnnamedConfigurable;
+import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.util.Comparing;
 
 import javax.swing.*;
@@ -14,9 +16,12 @@ import java.awt.*;
  */
 public class GeneralSettingsTab implements UnnamedConfigurable {
   private JPanel myContentPane;
-  private JTextField buildrPath;
+  private TextFieldWithBrowseButton buildrPath;
 
-  public Component getContentPanel() {
+    public GeneralSettingsTab() {
+    }
+
+    public Component getContentPanel() {
     return myContentPane;
   }
 
@@ -33,7 +38,7 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
    */
   public boolean isModified() {
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-    return !Comparing.equal(buildrPath.getText().trim(), settings.buildrPath);
+    return !Comparing.equal(buildrPath.getText().trim(), settings.getBuildrPath());
   }
 
   /**
@@ -41,7 +46,7 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
    */
   public void apply() throws ConfigurationException {
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-    settings.buildrPath = buildrPath.getText().trim();
+    settings.setBuildrPath(buildrPath.getText().trim());
   }
 
   //
@@ -50,7 +55,7 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
    */
   public void reset() {
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-    buildrPath.setText(settings.buildrPath);
+    buildrPath.setText(settings.getBuildrPath());
   }
 
   /**
@@ -58,5 +63,21 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
    */
   public void disposeUIResources() {
     // do nothing
+  }
+
+  public void validate() throws ConfigurationException {
+    final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
+
+    String executable = buildrPath.getText();
+
+    if (!settings.isValidBuildrPath(executable)) {
+      throw new ConfigurationException(
+        BuildrBundle.message("buildr.configuration.executable.error", executable)
+      );
+    }
+  }
+
+  private void createUIComponents() {
+    buildrPath = new BuildrSetExecutablePathPanel();
   }
 }

@@ -101,6 +101,7 @@ public class BuildrSettings implements ApplicationComponent, Configurable {
    */
   public void apply() throws ConfigurationException {
     if (form != null) {
+      form.validate();
       // Get data from form to component
       form.apply();
     }

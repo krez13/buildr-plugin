@@ -132,7 +132,7 @@ public class BuildrBeforeRunTaskProvider extends BeforeRunTaskProvider<BuildrBef
         public void run(@NotNull ProgressIndicator indicator) {
             final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
             final List<String> commands = new java.util.ArrayList<String>();
-            commands.add(settings.buildrPath);
+            commands.add(settings.getBuildrPath());
             commands.addAll(task.getTasks());
 
             try {

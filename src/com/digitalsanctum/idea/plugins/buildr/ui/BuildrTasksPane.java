@@ -3,10 +3,9 @@ package com.digitalsanctum.idea.plugins.buildr.ui;
 import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent;
 import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
-import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.ui.components.JBList;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
@@ -23,7 +22,6 @@ import java.util.List;
  * Time: 7:09:45 AM
  */
 public class BuildrTasksPane implements Buildr {
-    private static final Logger LOG = Logger.getInstance(BuildrTasksPane.class.getName());
     private JPanel tasksPanel;
     private JTextField commandTextField;
     private JComponent commandToolbar;
@@ -52,8 +50,8 @@ public class BuildrTasksPane implements Buildr {
         return tasksPanel;
     }
 
-    private JList getTaskList() {
-        final JList taskList = new JList(new TaskListModel(Collections.<BuildrTask>emptyList()));
+    private JList createTaskList() {
+        final JBList taskList = new JBList(new TaskListModel(Collections.<BuildrTask>emptyList()));
         taskList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -67,7 +65,7 @@ public class BuildrTasksPane implements Buildr {
         final MouseListener mouseListener = new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton( e ) && e.getClickCount() == 2) {
-                    buildrProject.runTask(DataManager.getInstance().getDataContext((Component)e.getSource()),
+                    buildrProject.runTask(
                             Arrays.asList(((BuildrTask) taskList.getSelectedValue()).getName()));
                 }
             }
@@ -77,7 +75,7 @@ public class BuildrTasksPane implements Buildr {
     }
 
     private void createUIComponents() {
-      this.taskList = getTaskList();
+      this.taskList = createTaskList();
 
       tasksLabel = new JLabel( "Tasks:" );
       tasksLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ));

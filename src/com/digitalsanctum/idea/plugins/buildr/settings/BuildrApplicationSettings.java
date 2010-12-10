@@ -7,6 +7,8 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+
 /**
  * User: shane
  * Date: Nov 22, 2008
@@ -24,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 )
 public class BuildrApplicationSettings implements PersistentStateComponent<BuildrApplicationSettings> {
 
-    public String buildrPath = TextUtil.EMPTY_STRING;
+    private String buildrPath = TextUtil.EMPTY_STRING;
 
 
     public static BuildrApplicationSettings getInstance() {
@@ -49,6 +51,19 @@ public class BuildrApplicationSettings implements PersistentStateComponent<Build
      * @param settings loaded component state
      */
     public void loadState(@NotNull final BuildrApplicationSettings settings) {
-        buildrPath = settings.buildrPath;
+        setBuildrPath(settings.getBuildrPath());
+    }
+
+    public String getBuildrPath() {
+        return buildrPath;
+    }
+
+    public void setBuildrPath(String buildrPath) {
+        this.buildrPath = buildrPath;
+    }
+
+    public boolean isValidBuildrPath(String buildrPath) {
+        File executable = new File(buildrPath);
+        return executable.exists() && executable.isFile() && executable.getName().startsWith("buildr");
     }
 }

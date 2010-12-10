@@ -53,9 +53,9 @@ public class BuildrTasksListComponent implements ProjectComponent {
         this.buildrTasksPane.refreshTaskList();
     }
 
-    public void runSelectedTask(DataContext context) {
+    public void runSelectedTask() {
         BuildrProjectComponent bpc = project.getComponent(BuildrProjectComponent.class);
-        bpc.runTask(context, this.buildrTasksPane.getCommand());
+        bpc.runTask(this.buildrTasksPane.getCommand());
     }
 
     public boolean isTaskSelected() {

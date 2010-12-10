@@ -61,7 +61,7 @@ public class BuildrProjectComponent implements ProjectComponent, Buildr {
         return this.buildrProject;
     }
 
-    public void runTask(DataContext context, @NotNull List<String> selectedTask) {
+    public void runTask(@NotNull List<String> selectedTask) {
         LOG.debug("in runTask:" + selectedTask);
 
         final BuildrConfigurationType type = ConfigurationTypeUtil.findConfigurationType(BuildrConfigurationType.class);
@@ -75,8 +75,11 @@ public class BuildrProjectComponent implements ProjectComponent, Buildr {
 
         final ExecutionEnvironment env = new ExecutionEnvironment(
                 new MyRunProfile(buildrProject.getProject(), selectedTask),
+                buildrProject.getProject(),
                 configSettings.getRunnerSettings(runner),
-                configSettings.getConfigurationSettings(runner), context);
+                configSettings.getConfigurationSettings(runner),
+                null
+        );
 
         try {
             runner.execute(DefaultRunExecutor.getRunExecutorInstance(), env, null);

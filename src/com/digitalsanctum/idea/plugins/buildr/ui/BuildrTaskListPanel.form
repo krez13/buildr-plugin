@@ -23,7 +23,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="e9628" class="javax.swing.JList" binding="taskList" custom-create="true">
+          <component id="bf19c" class="com.intellij.ui.components.JBList" binding="taskList">
             <constraints/>
             <properties>
               <selectionMode value="0"/>
