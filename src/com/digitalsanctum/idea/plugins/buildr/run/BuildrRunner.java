@@ -65,7 +65,11 @@ public class BuildrRunner extends Runner implements Buildr {
     }
 
     if (TextUtil.isEmpty(output.getStdout())) {
-      output = new Output(null, BuildrBundle.message("error.null.output"), output.getExitCode() );
+        if (!TextUtil.isEmpty(output.getStderr())) {
+            output = new Output(null, output.getStderr(), output.getExitCode() );
+        } else {
+            output = new Output(null, BuildrBundle.message("error.null.output"), output.getExitCode() );
+        }
     }
 
     return output;
