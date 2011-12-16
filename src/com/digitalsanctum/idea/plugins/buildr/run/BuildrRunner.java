@@ -43,22 +43,11 @@ public class BuildrRunner extends Runner implements Buildr {
     final String progressTitle = BuildrBundle.message("progress.please.wait");
     final Runner.ModalProgressMode mode = new Runner.ModalProgressMode(progressTitle);
 
-    String[] commands = new String[args.size() + 1];
-
-
-    /*if (OSUtil.isWindows()) {
-      commands[0] = BUILDR_WINDOWS;
-    } else {
-      commands[0] = BUILDR;
-    }*/
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-    commands[0] = settings.getBuildrPath();
-
-    System.arraycopy(args.toArray(new String[args.size()]), 0, commands, 1, args.size());
-
+    BuildrCommand command = settings.getBuilderCommandUsingTasks(args);
     Output output;
     try {
-      output = Runner.runInPathAndShowErrors(buildrProject.getBaseDirPath(), buildrProject.getProject(), mode, true, "Buildr Error", commands);
+      output = Runner.runInPathAndShowErrors(buildrProject.getBaseDirPath(), buildrProject.getProject(), mode, true, "Buildr Error", command);
     } catch (BuildrPluginException e) {
       LOG.error(BuildrBundle.message("error.buildr.exception"), e);
       output = new Output(null, BuildrBundle.message("error.buildr.exception"), -1 );

@@ -1,6 +1,7 @@
 package com.digitalsanctum.idea.plugins.buildr.settings;
 
 import com.digitalsanctum.idea.plugins.buildr.lang.TextUtil;
+import com.digitalsanctum.idea.plugins.buildr.run.BuildrCommand;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -8,6 +9,7 @@ import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * User: shane
@@ -27,6 +29,8 @@ import java.io.File;
 public class BuildrApplicationSettings implements PersistentStateComponent<BuildrApplicationSettings> {
 
     private String buildrPath = TextUtil.EMPTY_STRING;
+    private String bundlerPath = TextUtil.EMPTY_STRING;
+    private Boolean bundlerEnabled = false;
 
 
     public static BuildrApplicationSettings getInstance() {
@@ -52,6 +56,29 @@ public class BuildrApplicationSettings implements PersistentStateComponent<Build
      */
     public void loadState(@NotNull final BuildrApplicationSettings settings) {
         setBuildrPath(settings.getBuildrPath());
+        setBundlerPath(settings.getBundlerPath());
+        setBundlerEnabled(settings.getBundlerEnabled());
+    }
+
+    public void setBundlerEnabled(Boolean bundlerEnabled) {
+        this.bundlerEnabled = bundlerEnabled;
+    }
+
+    public Boolean getBundlerEnabled() {
+        return bundlerEnabled;
+    }
+    
+    public String getBundlerPath() {
+        return bundlerPath;
+    }
+
+    public void setBundlerPath(String bundlerPath) {
+        this.bundlerPath = bundlerPath;
+    }
+
+    public boolean isValidBundlerPath(String buildrPath) {
+        File executable = new File(buildrPath);
+        return executable.exists() && executable.isFile() && executable.getName().startsWith("bundle");
     }
 
     public String getBuildrPath() {
@@ -65,5 +92,9 @@ public class BuildrApplicationSettings implements PersistentStateComponent<Build
     public boolean isValidBuildrPath(String buildrPath) {
         File executable = new File(buildrPath);
         return executable.exists() && executable.isFile() && executable.getName().startsWith("buildr");
+    }
+
+    public BuildrCommand getBuilderCommandUsingTasks(List<String> tasks) {
+        return new BuildrCommand(this, tasks);
     }
 }

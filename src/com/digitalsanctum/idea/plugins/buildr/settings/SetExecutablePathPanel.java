@@ -10,10 +10,10 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
-class BuildrSetExecutablePathPanel extends TextFieldWithBrowseButton {
+class SetExecutablePathPanel extends TextFieldWithBrowseButton {
   private final Set<ActionListener> myOkListeners = new HashSet<ActionListener>();
 
-  BuildrSetExecutablePathPanel() {
+  SetExecutablePathPanel() {
     FileChooserDescriptor descriptor = new FileChooserDescriptor(true, false, false, false, false, false) {
       public void validateSelectedFiles(VirtualFile[] files) throws Exception {
         String path = files[0].getPath();
