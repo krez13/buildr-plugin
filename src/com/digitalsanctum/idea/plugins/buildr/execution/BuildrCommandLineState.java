@@ -37,7 +37,7 @@ public class BuildrCommandLineState extends CommandLineState {
         final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
 
         final GeneralCommandLine cmdLine = Runner.createAndSetupCmdLine(null, buildrProject.getBaseDirPath(),
-                settings.getBuildrPath(), tasks.toArray(new String[tasks.size()]));
+                settings.getBuilderCommandUsingTasks(tasks));
         LOG.debug("cmdLine=" + cmdLine.getCommandLineString());
         return new OSProcessHandler(cmdLine.createProcess(), cmdLine.getCommandLineString());
     }
