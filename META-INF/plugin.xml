@@ -5,14 +5,14 @@
   <category>Build</category>
   <description>
     <![CDATA[An IntelliJ IDEA plug-in for Apache Buildr. You must <a href="http://buildr.apache.org/installing.html">install Buildr</a> prior to installing the plug-in. Special thanks to Pepijn Van Eeckhoudt and Steve Blundy for contributions.]]></description>
-  <version>10.0.0-2010.12.03</version>
+  <version>11.0-2011.12.20</version>
   <change-notes>
     <![CDATA[ <a href="https://github.com/digitalsanctum/buildr-plugin/commits/master">Change log</a> ]]></change-notes>
   <vendor email="shane@digitalsanctum.com"
           logo="/com/digitalsanctum/idea/plugins/buildr/buildr-16x16.png"
           url="http://www.digitalsanctum.com/">Digital Sanctum, Inc.
   </vendor>
-  <idea-version since-build="98.510"/>
+  <idea-version since-build="107.777"/>
   <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
 
   <extensions defaultExtensionNs="com.intellij">

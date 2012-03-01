@@ -2,6 +2,8 @@ package com.digitalsanctum.idea.plugins.buildr.beforerun;
 
 import com.digitalsanctum.idea.plugins.buildr.BuildrBundle;
 import com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent;
+import com.digitalsanctum.idea.plugins.buildr.io.StreamGobbler;
+import com.digitalsanctum.idea.plugins.buildr.run.BuildrCommand;
 import com.digitalsanctum.idea.plugins.buildr.run.Runner;
 import com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings;
 import com.digitalsanctum.idea.plugins.buildr.ui.BuildrTaskListPanel;
@@ -21,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.io.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -131,12 +134,14 @@ public class BuildrBeforeRunTaskProvider extends BeforeRunTaskProvider<BuildrBef
 
         public void run(@NotNull ProgressIndicator indicator) {
             final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-            final List<String> commands = new java.util.ArrayList<String>();
-            commands.add(settings.getBuildrPath());
-            commands.addAll(task.getTasks());
-
+            BuildrCommand command = settings.getBuilderCommandUsingTasks(task.getTasks());
             try {
-                process = Runner.createProcess(baseDirPath, commands.toArray(new String[commands.size()]));
+                process = Runner.createProcess(baseDirPath, command);
+                StreamGobbler inputGobbler = new StreamGobbler(process.getInputStream());
+                StreamGobbler errorGobbler = new StreamGobbler(process.getErrorStream());
+                inputGobbler.start();
+                errorGobbler.start();
+
                 result.set(0 == process.waitFor());
             } catch (Throwable e) {
                 result.set(false);

@@ -17,6 +17,8 @@ import java.awt.*;
 public class GeneralSettingsTab implements UnnamedConfigurable {
   private JPanel myContentPane;
   private TextFieldWithBrowseButton buildrPath;
+    private TextFieldWithBrowseButton bundlerPath;
+    private JCheckBox bundlerEnabled;
 
     public GeneralSettingsTab() {
     }
@@ -38,7 +40,9 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
    */
   public boolean isModified() {
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-    return !Comparing.equal(buildrPath.getText().trim(), settings.getBuildrPath());
+    return !Comparing.equal(buildrPath.getText().trim(), settings.getBuildrPath()) ||
+           !Comparing.equal(bundlerPath.getText().trim(), settings.getBundlerPath()) ||
+           !Comparing.equal(bundlerEnabled.isSelected(), settings.getBundlerEnabled());
   }
 
   /**
@@ -47,6 +51,8 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
   public void apply() throws ConfigurationException {
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
     settings.setBuildrPath(buildrPath.getText().trim());
+    settings.setBundlerPath(bundlerPath.getText().trim());
+    settings.setBundlerEnabled(bundlerEnabled.isSelected());
   }
 
   //
@@ -56,6 +62,8 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
   public void reset() {
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
     buildrPath.setText(settings.getBuildrPath());
+    bundlerPath.setText(settings.getBundlerPath());
+    bundlerEnabled.setSelected(settings.getBundlerEnabled());
   }
 
   /**
@@ -68,16 +76,25 @@ public class GeneralSettingsTab implements UnnamedConfigurable {
   public void validate() throws ConfigurationException {
     final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
 
-    String executable = buildrPath.getText();
-
-    if (!settings.isValidBuildrPath(executable)) {
+    String buildrPathText = buildrPath.getText();
+    if (!settings.isValidBuildrPath(buildrPathText)) {
       throw new ConfigurationException(
-        BuildrBundle.message("buildr.configuration.executable.error", executable)
+        BuildrBundle.message("buildr.configuration.executable.error", buildrPathText)
       );
+    }
+
+    String bundlerPathText = bundlerPath.getText();
+    if(settings.getBundlerEnabled()) {
+      if (!settings.isValidBundlerPath(bundlerPathText)) {
+        throw new ConfigurationException(
+          BuildrBundle.message("buildr.configuration.executable.error", bundlerPathText)
+        );
+      }
     }
   }
 
   private void createUIComponents() {
-    buildrPath = new BuildrSetExecutablePathPanel();
+    buildrPath = new SetExecutablePathPanel();
+    bundlerPath = new SetExecutablePathPanel();
   }
 }

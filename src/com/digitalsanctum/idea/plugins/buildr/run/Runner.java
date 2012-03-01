@@ -38,7 +38,7 @@ public class Runner {
    */
   @NotNull
   public static Output runInPath(@Nullable final String workingDir,
-                                 @NotNull final String... command) throws BuildrPluginException {
+                                 @NotNull final BuildrCommand command) throws BuildrPluginException {
     return runInPathInternal(workingDir, null, null, false, new Runner.SameThreadMode(false), command);
   }
 
@@ -46,7 +46,7 @@ public class Runner {
                                               @Nullable Project project,
                                               @NotNull final ExecutionMode mode,
                                               final boolean showStdErrErrors, @Nullable final String errorTitle,
-                                              @NotNull final String... command) throws BuildrPluginException {
+                                              @NotNull final BuildrCommand command) throws BuildrPluginException {
     return runInPathInternal(workingDir, project, errorTitle, showStdErrErrors, mode, command);
   }
 
@@ -69,12 +69,12 @@ public class Runner {
                                           @Nullable final String errorTitle,
                                           final boolean showErrors,
                                           @NotNull final ExecutionMode mode,
-                                          @NotNull final String... command) throws BuildrPluginException {
-// executing
+                                          @NotNull final BuildrCommand command) throws BuildrPluginException {
+
     final StringBuilder out = new StringBuilder();
     final StringBuilder err = new StringBuilder();
     final Process process = createProcess(workingDir, command);
-    final OSProcessHandler osProcessHandler = new OSProcessHandler(process, TextUtil.concat(command));
+    final OSProcessHandler osProcessHandler = new OSProcessHandler(process, command.getCommandLine());
     osProcessHandler.addProcessListener(new OutputListener(out, err));
     osProcessHandler.startNotify();
 
@@ -107,7 +107,7 @@ public class Runner {
    *
    */
   @NotNull
-  public static Output run(@NotNull final String... command) throws BuildrPluginException {
+  public static Output run(@NotNull final BuildrCommand command) throws BuildrPluginException {
     return runInPath(null, command);
   }
 
@@ -122,20 +122,13 @@ public class Runner {
    */
   @NotNull
   public static Process createProcess(@Nullable final String workingDir,
-                                      @NotNull final String... command) throws BuildrPluginException {
+                                      @NotNull final BuildrCommand command) throws BuildrPluginException {
     Process process = null;
 
-    final String[] arguments;
-    if (command.length > 1) {
-      arguments = new String[command.length - 1];
-      System.arraycopy(command, 1, arguments, 0, command.length - 1);
-    } else {
-      arguments = new String[0];
-    }
-
-    final GeneralCommandLine cmdLine = createAndSetupCmdLine(null, workingDir, command[0], arguments);
+    final GeneralCommandLine cmdLine = createAndSetupCmdLine(null, workingDir, command);
     try {
 
+      cmdLine.setRedirectErrorStream(true);
       process = cmdLine.createProcess();
 
     } catch (ExecutionException e) {
@@ -172,21 +165,19 @@ public class Runner {
    *
    * @param additionalLoadPath Additional load path
    * @param workingDir         Process working dir
-   * @param executablePath     Path to executable file
-   * @param arguments          Process commandLine
+   * @param command            BuildrCommand
    * @return process builder
    */
   public static GeneralCommandLine createAndSetupCmdLine(@Nullable final String additionalLoadPath,
                                                          @Nullable final String workingDir,
-                                                         @NotNull final String executablePath,
-                                                         @NotNull final String... arguments) {
+                                                         @NotNull final BuildrCommand command) {
     final GeneralCommandLine cmdLine = new GeneralCommandLine();
 
-    cmdLine.setExePath(VirtualFileUtil.convertToOSDependentPath(executablePath));
+    cmdLine.setExePath(VirtualFileUtil.convertToOSDependentPath(command.getExecutablePath()));
     if (workingDir != null) {
       cmdLine.setWorkDirectory(VirtualFileUtil.convertToOSDependentPath(workingDir));
     }
-    cmdLine.addParameters(arguments);
+    cmdLine.addParameters(command.getArguments());
 
     //Plugin env variables
     final Map<String, String> env = getSystemEnv();
