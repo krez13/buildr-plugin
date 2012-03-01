@@ -16,7 +16,6 @@
   <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
 
   <extensions defaultExtensionNs="com.intellij">
-    <!--<errorHandler implementation="com.digitalsanctum.idea.plugins.buildr.error.BuildrErrorReportSubmitter"/>-->
     <applicationService serviceInterface="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"
                         serviceImplementation="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"/>
     <configurationType implementation="com.digitalsanctum.idea.plugins.buildr.execution.BuildrConfigurationType"/>

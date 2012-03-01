@@ -1,18 +1,13 @@
 package com.digitalsanctum.idea.plugins.buildr;
 
-import com.digitalsanctum.idea.plugins.buildr.execution.BuildrConfigurationType;
 import com.digitalsanctum.idea.plugins.buildr.execution.BuildrRunProfile;
 import com.digitalsanctum.idea.plugins.buildr.execution.BuildrTasksPane;
 import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
-import com.digitalsanctum.idea.plugins.buildr.parser.AvailableTasksParser;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Output;
 import com.intellij.execution.OutputListener;
-import com.intellij.execution.RunManager;
-import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.RunnerRegistry;
 import com.intellij.execution.configurations.ConfigurationPerRunnerSettings;
-import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.RunnerSettings;
 import com.intellij.execution.executors.DefaultRunExecutor;
@@ -28,12 +23,14 @@ import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.digitalsanctum.idea.plugins.buildr.Buildr.*;
 
@@ -44,6 +41,8 @@ import static com.digitalsanctum.idea.plugins.buildr.Buildr.*;
  */
 public class BuildrComponent implements ProjectComponent {
   private static final Logger LOG = Logger.getInstance( BuildrComponent.class );
+
+  private static final Pattern TASK_LINE = Pattern.compile( "^\\s*([a-zA-Z0-9:]+)\\s*# (.*)$" );
 
   private Project project;
   private ToolWindow buildrToolWindow;
@@ -147,11 +146,31 @@ public class BuildrComponent implements ProjectComponent {
         process.startNotify();
         process.waitFor( 30 * 1000 );
         Output output = outputListener.getOutput();
-        return AvailableTasksParser.parseTasks( output.getStdout() );
+        return parseTasks( output.getStdout() );
       }
     } catch ( ExecutionException e ) {
       // Ignored
     }
     return Collections.emptyList();
+  }
+
+  private static List<BuildrTask> parseTasks( String tasksOutput ) {
+    if ( tasksOutput == null || tasksOutput.length() == 0 ) {
+      return Collections.emptyList();
+    }
+
+    List<BuildrTask> tasks = new ArrayList<BuildrTask>();
+    String[] taskLine = tasksOutput.split( "[\r\n]+" );
+    for ( String s : taskLine ) {
+      Matcher matcher = TASK_LINE.matcher( s );
+      if ( matcher.matches() ) {
+        String name = matcher.group( 1 );
+        String desc = matcher.group( 2 );
+        BuildrTask task = new BuildrTask( name, desc );
+        tasks.add( task );
+      }
+    }
+
+    return tasks;
   }
 }

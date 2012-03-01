@@ -1,6 +1,5 @@
 package com.digitalsanctum.idea.plugins.buildr.settings;
 
-import com.digitalsanctum.idea.plugins.buildr.lang.TextUtil;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -26,8 +25,8 @@ import java.io.File;
 )
 public class BuildrApplicationSettings implements PersistentStateComponent<BuildrApplicationSettings> {
 
-    private String buildrPath = TextUtil.EMPTY_STRING;
-    private String bundlerPath = TextUtil.EMPTY_STRING;
+    private String buildrPath = "";
+    private String bundlerPath = "";
     private Boolean bundlerEnabled = false;
 
 
