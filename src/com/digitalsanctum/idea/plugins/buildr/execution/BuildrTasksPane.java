@@ -46,6 +46,7 @@ public class BuildrTasksPane {
   private JLabel tasksLabel;
   private JLabel commandLabel;
   private JComboBox moduleComboBox;
+  private JLabel moduleLabel;
   private final BuildrComponent component;
   private final ModuleSelector moduleSelector;
 
@@ -97,6 +98,9 @@ public class BuildrTasksPane {
   private void createUIComponents() {
     this.taskList = createTaskList();
 
+
+    moduleLabel = new JLabel( "Module:" );
+    moduleLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ) );
     tasksLabel = new JLabel( "Tasks:" );
     tasksLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ) );
     commandLabel = new JLabel( "Command:" );
