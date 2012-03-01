@@ -2,7 +2,6 @@ package com.digitalsanctum.idea.plugins.buildr.settings;
 
 import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.digitalsanctum.idea.plugins.buildr.BuildrBundle;
-import com.digitalsanctum.idea.plugins.buildr.BuildrComponents;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -16,7 +15,7 @@ import javax.swing.*;
  * Date: Nov 22, 2008
  * Time: 10:49:49 AM
  */
-public class BuildrSettings implements ApplicationComponent, Configurable {
+public class BuildrSettingsComponent implements ApplicationComponent, Configurable {
 
   private BuildrSettingsPane form;
 
@@ -28,7 +27,7 @@ public class BuildrSettings implements ApplicationComponent, Configurable {
    */
   @NotNull
   public String getComponentName() {
-    return BuildrComponents.BUILDR_SETTINGS;
+    return "BuildrSettingsComponent";
   }
 
   /**

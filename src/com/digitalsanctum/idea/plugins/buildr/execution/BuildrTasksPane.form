@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.digitalsanctum.idea.plugins.buildr.execution.BuildrTasksPane">
+  <grid id="27dc6" binding="tasksPanel" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+    <margin top="2" left="2" bottom="2" right="2"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none">
+      <size top="0" left="3" bottom="3" right="3"/>
+    </border>
+    <children>
+      <scrollpane id="8bbd6">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="42c00" class="javax.swing.JList" binding="taskList" custom-create="true">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="9e330" class="javax.swing.JLabel" binding="commandLabel" custom-create="true">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="59" height="14"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Command:"/>
+        </properties>
+      </component>
+      <component id="cdded" class="javax.swing.JLabel" binding="tasksLabel" custom-create="true">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="59" height="14"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Tasks:"/>
+        </properties>
+      </component>
+      <component id="d6228" class="javax.swing.JTextField" binding="commandTextField">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="78c55" class="javax.swing.JComboBox" binding="moduleComboBox">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="61e10" class="javax.swing.JLabel" default-binding="true">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="59" height="14"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Module:"/>
+        </properties>
+      </component>
+      <component id="2ce4f" class="javax.swing.JComponent" binding="commandToolbar" custom-create="true">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </component>
+      <component id="4ef17" class="javax.swing.JComponent" binding="taskListToolbar" custom-create="true">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </component>
+    </children>
+  </grid>
+</form>

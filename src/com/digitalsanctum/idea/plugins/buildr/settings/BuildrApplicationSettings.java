@@ -1,7 +1,6 @@
 package com.digitalsanctum.idea.plugins.buildr.settings;
 
 import com.digitalsanctum.idea.plugins.buildr.lang.TextUtil;
-import com.digitalsanctum.idea.plugins.buildr.run.BuildrCommand;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -9,7 +8,6 @@ import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * User: shane
@@ -92,9 +90,5 @@ public class BuildrApplicationSettings implements PersistentStateComponent<Build
     public boolean isValidBuildrPath(String buildrPath) {
         File executable = new File(buildrPath);
         return executable.exists() && executable.isFile() && executable.getName().startsWith("buildr");
-    }
-
-    public BuildrCommand getBuilderCommandUsingTasks(List<String> tasks) {
-        return new BuildrCommand(this, tasks);
     }
 }

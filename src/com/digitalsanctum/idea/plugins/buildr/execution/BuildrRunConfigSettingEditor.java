@@ -1,46 +1,55 @@
 package com.digitalsanctum.idea.plugins.buildr.execution;
 
-import com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent;
-import com.digitalsanctum.idea.plugins.buildr.ui.BuildrTaskListPanel;
-import com.intellij.openapi.diagnostic.Logger;
+import com.digitalsanctum.idea.plugins.buildr.BuildrComponent;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import java.util.Arrays;
 
 /**
  * User: steve
  * Date: Jan 4, 2010
  * Time: 11:36:31 PM
  */
-public class BuildrRunConfigSettingEditor extends SettingsEditor<BuildrRunConfiguration> {
-    private static final Logger LOG = Logger.getInstance(BuildrRunConfigSettingEditor.class.getName());
-    private final BuildrTaskListPanel form;
+public class BuildrRunConfigSettingEditor extends SettingsEditor<BuildrSimpleRunConfiguration> {
+  private final ModuleSelector moduleSelector;
 
-    public BuildrRunConfigSettingEditor(BuildrProjectComponent buildrProject) {
-        this.form = new BuildrTaskListPanel(buildrProject);
-    }
-    
-    @Override
-    protected void resetEditorFrom(BuildrRunConfiguration config) {
-        LOG.debug("in resetEditorForm:tasks=" + config.getTasks());
-        form.setTasks(config.getTasks());
-    }
+  private JPanel panel;
+  private JComboBox modulesComboBox;
+  private JTextField tasks;
 
-    @Override
-    protected void applyEditorTo(BuildrRunConfiguration config) throws ConfigurationException {
-        LOG.debug("in applyEditorTo:tasks=" + form.getTasks());
-        config.setTasks(form.getTasks());
-    }
+  public BuildrRunConfigSettingEditor( BuildrComponent buildrProject ) {
+    moduleSelector = new ModuleSelector(
+        buildrProject.getProject(),
+        modulesComboBox
+    );
+  }
 
-    @NotNull
-    @Override
-    protected JComponent createEditor() {
-        return form.getPanel();
-    }
+  @Override
+  protected void resetEditorFrom( BuildrSimpleRunConfiguration config ) {
+    moduleSelector.reset( config );
+    tasks.setText( StringUtils.join( config.getTasks(), " " ) );
+  }
 
-    @Override
-    protected void disposeEditor() {
-    }
+  @Override
+  protected void applyEditorTo( BuildrSimpleRunConfiguration config ) throws ConfigurationException {
+    moduleSelector.applyTo( config );
+    config.setTasks( Arrays.asList( StringUtils.split( tasks.getText(), " " ) ) );
+  }
+
+  @NotNull
+  @Override
+  protected JComponent createEditor() {
+    return panel;
+  }
+
+  @Override
+  protected void disposeEditor() {
+  }
 }

@@ -1,18 +1,11 @@
 package com.digitalsanctum.idea.plugins.buildr.execution;
 
-import com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent;
-import com.digitalsanctum.idea.plugins.buildr.model.BuildrProject;
-import com.digitalsanctum.idea.plugins.buildr.run.Runner;
-import com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings;
+import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-
-import java.util.List;
 
 /**
  * User: steve
@@ -20,25 +13,19 @@ import java.util.List;
  * Time: 9:15:45 PM
  */
 public class BuildrCommandLineState extends CommandLineState {
-    private static final Logger LOG = Logger.getInstance(BuildrCommandLineState.class.getName());
-    private BuildrProject buildrProject;
-    private List<String> tasks;
+  public BuildrCommandLineState( ExecutionEnvironment environment ) {
+    super( environment );
+  }
 
-    public BuildrCommandLineState(ExecutionEnvironment environment, List<String> tasks) {
-        super(environment);
-        this.tasks = tasks;
-        final Project project = environment.getProject();
-        assert project != null;
-        this.buildrProject = project.getComponent(BuildrProjectComponent.class).getBuildrProject();
+  @Override
+  protected OSProcessHandler startProcess() throws ExecutionException {
+    BuildrSimpleRunConfiguration config = ( BuildrSimpleRunConfiguration ) getRunnerSettings().getRunProfile();
+    GeneralCommandLine commandLine = Buildr.createCommandLine( Buildr.getWorkingDirectory( config.getProject(), config.getModule() ), config.getTasks() );
+    if ( commandLine != null ) {
+      return new OSProcessHandler( commandLine.createProcess(), commandLine.getCommandLineString() );
     }
-
-    @Override
-    protected OSProcessHandler startProcess() throws ExecutionException {
-        final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
-
-        final GeneralCommandLine cmdLine = Runner.createAndSetupCmdLine(null, buildrProject.getBaseDirPath(),
-                settings.getBuilderCommandUsingTasks(tasks));
-        LOG.debug("cmdLine=" + cmdLine.getCommandLineString());
-        return new OSProcessHandler(cmdLine.createProcess(), cmdLine.getCommandLineString());
+    else {
+      throw new ExecutionException( "Could not create buildr command line" );
     }
+  }
 }

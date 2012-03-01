@@ -1,6 +1,6 @@
 package com.digitalsanctum.idea.plugins.buildr.actions;
 
-import com.digitalsanctum.idea.plugins.buildr.BuildrTasksListComponent;
+import com.digitalsanctum.idea.plugins.buildr.BuildrComponent;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 /**
@@ -11,7 +11,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 public class RunTaskAction extends AbstractProjectAction {
     @Override
     public void actionPerformed(AnActionEvent event) {
-        BuildrTasksListComponent bpc = findProjectComponent(event.getDataContext(), BuildrTasksListComponent.class);
+        BuildrComponent bpc = findProjectComponent(event.getDataContext(), BuildrComponent.class);
         if (null != bpc) {
             bpc.runSelectedTask();
         }
@@ -19,7 +19,7 @@ public class RunTaskAction extends AbstractProjectAction {
 
     @Override
     public void update(AnActionEvent event) {
-        final BuildrTasksListComponent bpc = findProjectComponent(event.getDataContext(), BuildrTasksListComponent.class);
+        final BuildrComponent bpc = findProjectComponent(event.getDataContext(), BuildrComponent.class);
         event.getPresentation().setEnabled(null != bpc && bpc.isTaskSelected());
     }
 

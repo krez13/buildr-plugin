@@ -5,7 +5,7 @@
   <category>Build</category>
   <description>
     <![CDATA[An IntelliJ IDEA plug-in for Apache Buildr. You must <a href="http://buildr.apache.org/installing.html">install Buildr</a> prior to installing the plug-in. Special thanks to Pepijn Van Eeckhoudt and Steve Blundy for contributions.]]></description>
-  <version>11.0-2011.12.20</version>
+  <version>11.0-2012.03.01-luciad</version>
   <change-notes>
     <![CDATA[ <a href="https://github.com/digitalsanctum/buildr-plugin/commits/master">Change log</a> ]]></change-notes>
   <vendor email="shane@digitalsanctum.com"
@@ -20,34 +20,21 @@
     <applicationService serviceInterface="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"
                         serviceImplementation="com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings"/>
     <configurationType implementation="com.digitalsanctum.idea.plugins.buildr.execution.BuildrConfigurationType"/>
-    <stepsBeforeRunProvider
-        implementation="com.digitalsanctum.idea.plugins.buildr.beforerun.BuildrBeforeRunTaskProvider"/>
   </extensions>
 
   <application-components>
     <component>
-      <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrComponent</implementation-class>
-    </component>
-    <component>
-      <implementation-class>com.digitalsanctum.idea.plugins.buildr.settings.BuildrSettings</implementation-class>
+      <implementation-class>com.digitalsanctum.idea.plugins.buildr.settings.BuildrSettingsComponent</implementation-class>
     </component>
   </application-components>
 
   <project-components>
     <component>
-      <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrProjectComponent</implementation-class>
-    </component>
-    <component>
-      <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrTasksListComponent</implementation-class>
+      <implementation-class>com.digitalsanctum.idea.plugins.buildr.BuildrComponent</implementation-class>
     </component>
   </project-components>
 
   <actions>
-    <action id="BuildrVersion" class="com.digitalsanctum.idea.plugins.buildr.actions.BuildrVersionAction"
-            text="Buildr Version">
-      <add-to-group group-id="HelpMenu" anchor="last"/>
-    </action>
-
     <group id="taskListToolbar">
       <action id="refreshTaskList" class="com.digitalsanctum.idea.plugins.buildr.actions.RefreshTaskListAction"
               icon="/actions/sync.png"/>

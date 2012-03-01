@@ -1,11 +1,14 @@
 package com.digitalsanctum.idea.plugins.buildr.execution;
 
 import com.digitalsanctum.idea.plugins.buildr.Buildr;
-import com.intellij.execution.configurations.*;
+import com.intellij.execution.configurations.ConfigurationFactory;
+import com.intellij.execution.configurations.ConfigurationType;
+import com.intellij.execution.configurations.ConfigurationTypeUtil;
+import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
+import javax.swing.Icon;
 
 /**
  * User: steve
@@ -13,45 +16,41 @@ import javax.swing.*;
  * Time: 10:25:35 PM
  */
 public class BuildrConfigurationType implements ConfigurationType {
-    private final MyConfigurationFactory myConfigurationFactory = new MyConfigurationFactory();
-
-    public String getDisplayName() {
-        return "BuildR";
+  private final ConfigurationFactory myConfigurationFactory = new ConfigurationFactory( this ) {
+    @Override
+    public RunConfiguration createTemplateConfiguration( Project project ) {
+      return new BuildrRunConfiguration( "", project, this );
     }
+  };
 
-    public String getConfigurationTypeDescription() {
-        return "BuildR";
-    }
+  public static BuildrConfigurationType getInstance() {
+    return ConfigurationTypeUtil.findConfigurationType( BuildrConfigurationType.class );
+  }
 
-    public Icon getIcon() {
-        return Buildr.BUILDR_16;
-    }
+  public String getDisplayName() {
+    return "Buildr";
+  }
 
-    @NotNull
-    public String getId() {
-        return getDisplayName();
-    }
+  public String getConfigurationTypeDescription() {
+    return "Buildr";
+  }
 
-    public MyConfigurationFactory getMyConfigurationFactory() {
-        return myConfigurationFactory;
-    }
+  public Icon getIcon() {
+    return Buildr.BUILDR_16;
+  }
 
-    public ConfigurationFactory[] getConfigurationFactories() {
-        return new ConfigurationFactory[] {
-                myConfigurationFactory
-        };
-    }
+  @NotNull
+  public String getId() {
+    return getDisplayName();
+  }
 
-    class MyConfigurationFactory extends ConfigurationFactory {
-        protected MyConfigurationFactory() {
-            super(BuildrConfigurationType.this);
-        }
+  public ConfigurationFactory[] getConfigurationFactories() {
+    return new ConfigurationFactory[]{
+        myConfigurationFactory
+    };
+  }
 
-        @Override
-        public RunConfiguration createTemplateConfiguration(Project project) {
-            return new BuildrRunConfiguration(this, project);
-        }
-
-    }
-
+  public ConfigurationFactory getConfigurationFactory() {
+    return myConfigurationFactory;
+  }
 }
