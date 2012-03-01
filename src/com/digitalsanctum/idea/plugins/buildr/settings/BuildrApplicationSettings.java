@@ -74,8 +74,8 @@ public class BuildrApplicationSettings implements PersistentStateComponent<Build
         this.bundlerPath = bundlerPath;
     }
 
-    public boolean isValidBundlerPath(String buildrPath) {
-        File executable = new File(buildrPath);
+    public boolean isValidBundlerPath(String bundlerPath) {
+        File executable = new File(bundlerPath);
         return executable.exists() && executable.isFile() && executable.getName().startsWith("bundle");
     }
 
