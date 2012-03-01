@@ -1,7 +1,7 @@
 package com.digitalsanctum.idea.plugins.buildr;
 
 import com.digitalsanctum.idea.plugins.buildr.execution.BuildrConfigurationType;
-import com.digitalsanctum.idea.plugins.buildr.execution.BuildrSimpleRunConfiguration;
+import com.digitalsanctum.idea.plugins.buildr.execution.BuildrRunProfile;
 import com.digitalsanctum.idea.plugins.buildr.execution.BuildrTasksPane;
 import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
 import com.digitalsanctum.idea.plugins.buildr.parser.AvailableTasksParser;
@@ -11,8 +11,10 @@ import com.intellij.execution.OutputListener;
 import com.intellij.execution.RunManager;
 import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.RunnerRegistry;
+import com.intellij.execution.configurations.ConfigurationPerRunnerSettings;
 import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.configurations.RunnerSettings;
 import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
@@ -109,15 +111,7 @@ public class BuildrComponent implements ProjectComponent {
   }
 
   public void runTask( @Nullable Module module, @NotNull List<String> tasks ) {
-    String name = StringUtils.join( tasks, ',' );
-    final BuildrConfigurationType type = ConfigurationTypeUtil.findConfigurationType( BuildrConfigurationType.class );
-
-    final RunnerAndConfigurationSettings configSettings = RunManager.getInstance( project )
-        .createRunConfiguration( name, type.getConfigurationFactory() );
-
-    BuildrSimpleRunConfiguration configuration = ( BuildrSimpleRunConfiguration ) configSettings.getConfiguration();
-    configuration.setModule( module );
-    configuration.setTasks( tasks );
+    BuildrRunProfile configuration = new BuildrRunProfile( project, module, tasks );
     final ProgramRunner runner = RunnerRegistry.getInstance().findRunnerById( DefaultRunExecutor.EXECUTOR_ID );
 
     assert runner != null;
@@ -125,8 +119,8 @@ public class BuildrComponent implements ProjectComponent {
     final ExecutionEnvironment env = new ExecutionEnvironment(
         configuration,
         project,
-        configSettings.getRunnerSettings( runner ),
-        configSettings.getConfigurationSettings( runner ),
+        new RunnerSettings( null, configuration ),
+        new ConfigurationPerRunnerSettings( runner.getRunnerId(), null ),
         null
     );
 

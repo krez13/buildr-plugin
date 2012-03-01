@@ -77,15 +77,6 @@ class ModuleSelector {
     } );
   }
 
-  public void applyTo( final BuildrSimpleRunConfiguration configurationModule ) {
-    configurationModule.setModule( ( Module ) myModulesList.getSelectedItem() );
-  }
-
-  public void reset( final BuildrSimpleRunConfiguration configuration ) {
-    updateModules();
-    myModules.setSelectedItem( configuration.getModule() );
-  }
-
   public void updateModules() {
     final Module[] modules = ModuleManager.getInstance( getProject() ).getModules();
     final List<Module> list = new ArrayList<Module>();
@@ -102,7 +93,7 @@ class ModuleSelector {
     for ( int i = 0; i < contentRoots.length; i++ ) {
       VirtualFile contentRoot = contentRoots[ i ];
       VirtualFile buildfile = contentRoot.findChild( "buildfile" );
-      if (buildfile != null) {
+      if ( buildfile != null ) {
         return true;
       }
     }
@@ -111,6 +102,10 @@ class ModuleSelector {
 
   public Project getProject() {
     return myProject;
+  }
+
+  public void setSelectedModule( Module aModule ) {
+    myModules.setSelectedItem( aModule );
   }
 
   private void setModules( final Collection<Module> modules ) {

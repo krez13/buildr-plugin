@@ -1,6 +1,7 @@
 package com.digitalsanctum.idea.plugins.buildr.execution;
 
 import com.digitalsanctum.idea.plugins.buildr.BuildrComponent;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +18,7 @@ import java.util.Arrays;
  * Date: Jan 4, 2010
  * Time: 11:36:31 PM
  */
-public class BuildrRunConfigSettingEditor extends SettingsEditor<BuildrSimpleRunConfiguration> {
+public class BuildrRunConfigSettingEditor extends SettingsEditor<BuildrRunConfiguration> {
   private final ModuleSelector moduleSelector;
 
   private JPanel panel;
@@ -32,14 +33,16 @@ public class BuildrRunConfigSettingEditor extends SettingsEditor<BuildrSimpleRun
   }
 
   @Override
-  protected void resetEditorFrom( BuildrSimpleRunConfiguration config ) {
-    moduleSelector.reset( config );
+  protected void resetEditorFrom( BuildrRunConfiguration config ) {
+    moduleSelector.updateModules();
+    Module module = config.getModule();
+    moduleSelector.setSelectedModule( module );
     tasks.setText( StringUtils.join( config.getTasks(), " " ) );
   }
 
   @Override
-  protected void applyEditorTo( BuildrSimpleRunConfiguration config ) throws ConfigurationException {
-    moduleSelector.applyTo( config );
+  protected void applyEditorTo( BuildrRunConfiguration config ) throws ConfigurationException {
+    config.setModule( moduleSelector.getModule() );
     config.setTasks( Arrays.asList( StringUtils.split( tasks.getText(), " " ) ) );
   }
 
