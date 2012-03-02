@@ -1,5 +1,6 @@
 package com.digitalsanctum.idea.plugins.buildr.execution;
 
+import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.digitalsanctum.idea.plugins.buildr.BuildrComponent;
 import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
 import com.intellij.openapi.actionSystem.ActionGroup;
@@ -86,7 +87,7 @@ public class BuildrTasksPane {
       public void mouseClicked( MouseEvent e ) {
         if ( SwingUtilities.isLeftMouseButton( e ) && e.getClickCount() == 2 ) {
           component.runTask(
-              moduleSelector.getModule(),
+              getWorkingDirectory(),
               Arrays.asList( ( ( BuildrTask ) taskList.getSelectedValue() ).getName() ) );
         }
       }
@@ -99,11 +100,11 @@ public class BuildrTasksPane {
     this.taskList = createTaskList();
 
 
-    moduleLabel = new JLabel( "Module:" );
+    moduleLabel = new JLabel();
     moduleLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ) );
-    tasksLabel = new JLabel( "Tasks:" );
+    tasksLabel = new JLabel();
     tasksLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ) );
-    commandLabel = new JLabel( "Command:" );
+    commandLabel = new JLabel();
     commandLabel.setBorder( BorderFactory.createEmptyBorder( 0, 3, 0, 0 ) );
 
     ActionManager actionManager = ActionManager.getInstance();
@@ -140,7 +141,12 @@ public class BuildrTasksPane {
     return Arrays.asList( StringUtils.split( this.commandTextField.getText(), " " ) );
   }
 
-  public Module getModule() {
-    return moduleSelector.getModule();
+  public void refresh() {
+    moduleSelector.updateModules();
+  }
+
+  public String getWorkingDirectory() {
+    Module module = moduleSelector.getModule();
+    return module != null ? Buildr.getWorkingDirectory( module ) : Buildr.getWorkingDirectory( component.getProject() );
   }
 }

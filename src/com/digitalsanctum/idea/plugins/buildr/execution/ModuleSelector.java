@@ -16,6 +16,7 @@ package com.digitalsanctum.idea.plugins.buildr.execution;
  * limitations under the License.
  */
 
+import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.intellij.ide.ui.ListCellRendererWrapper;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -34,7 +35,7 @@ import java.util.Comparator;
 import java.util.List;
 
 class ModuleSelector {
-  private static final String NO_MODULE = "<no module>";
+  private static final String NO_MODULE = "<Project Root>";
 
   private final Project myProject;
   private final JComboBox myModulesList;
@@ -78,6 +79,8 @@ class ModuleSelector {
   }
 
   public void updateModules() {
+    Module selectedModule = getModule();
+
     final Module[] modules = ModuleManager.getInstance( getProject() ).getModules();
     final List<Module> list = new ArrayList<Module>();
     for ( final Module module : modules ) {
@@ -86,14 +89,15 @@ class ModuleSelector {
       }
     }
     setModules( list );
+    if ( list.contains( selectedModule ) ) {
+      setSelectedModule( selectedModule );
+    }
   }
 
   public boolean isModuleAccepted( final Module module ) {
     VirtualFile[] contentRoots = ModuleRootManager.getInstance( module ).getContentRoots();
     for ( int i = 0; i < contentRoots.length; i++ ) {
-      VirtualFile contentRoot = contentRoots[ i ];
-      VirtualFile buildfile = contentRoot.findChild( "buildfile" );
-      if ( buildfile != null ) {
+      if ( Buildr.buildfilePresent( contentRoots[ i ] ) ) {
         return true;
       }
     }
@@ -113,6 +117,14 @@ class ModuleSelector {
     myModules.add( null );
     for ( Module module : modules ) {
       myModules.add( module );
+    }
+    if ( myModules.getSize() > 0 ) {
+      myModulesList.setEnabled( true );
+      setSelectedModule( ( Module ) myModules.get( 0 ) );
+    }
+    else {
+      myModulesList.setEnabled( false );
+      setSelectedModule( null );
     }
   }
 

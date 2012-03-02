@@ -64,7 +64,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Module:"/>
+          <text value="Context:"/>
         </properties>
       </component>
       <component id="2ce4f" class="javax.swing.JComponent" binding="commandToolbar" custom-create="true">

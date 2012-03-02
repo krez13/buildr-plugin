@@ -20,7 +20,6 @@ public class RunTaskAction extends AbstractProjectAction {
     @Override
     public void update(AnActionEvent event) {
         final BuildrComponent bpc = findProjectComponent(event.getDataContext(), BuildrComponent.class);
-        event.getPresentation().setEnabled(null != bpc && bpc.isTaskSelected());
+        event.getPresentation().setEnabled(null != bpc && bpc.canRunSelectedTask());
     }
-
 }

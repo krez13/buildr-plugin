@@ -9,9 +9,7 @@ import java.util.List;
  *
  */
 public interface BuildrRunSettings {
-  Project getProject();
-
-  Module getModule();
+  String getWorkingDirectory();
 
   List<String> getTasks();
 }

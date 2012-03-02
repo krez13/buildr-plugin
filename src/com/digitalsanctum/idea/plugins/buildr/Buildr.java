@@ -19,9 +19,6 @@ import java.util.List;
  * Time: 8:38:54 AM
  */
 public final class Buildr {
-
-  public static final String VERSION_ARG = "-V";
-  public static final String HELP_TASKS_ARG = "-T";
   public static final String[] BUILDFILES = { "buildfile", "Buildfile", "rakefile", "Rakefile", "rakefile.rb", "Rakefile.rb" };
 
   public static final Icon BUILDR_16 = IconLoader.getIcon( "/com/digitalsanctum/idea/plugins/buildr/buildr-16x16.png" );
@@ -35,9 +32,16 @@ public final class Buildr {
 
   public static boolean buildfilePresent( VirtualFile aVf ) {
     for ( String buildfile : BUILDFILES ) {
-      if ( aVf.findChild( buildfile ) != null ) {
-        return true;
+      VirtualFile f = aVf;
+      while ( f != null ) {
+        if ( f.findChild( buildfile ) != null ) {
+          return true;
+        }
+        else {
+          f = f.getParent();
+        }
       }
+
     }
     return false;
   }
@@ -72,24 +76,23 @@ public final class Buildr {
     return commandLine;
   }
 
-  public static String getWorkingDirectory( Project aProject, Module... aModules ) {
-    for ( int i = 0; i < aModules.length; i++ ) {
-      Module module = aModules[ i ];
-      if ( module != null ) {
-        VirtualFile[] roots = ModuleRootManager.getInstance( module ).getContentRoots();
-        for ( int j = 0; j < roots.length; j++ ) {
-          VirtualFile root = roots[ j ];
-          if ( buildfilePresent( root ) ) {
-            return root.getPath();
-          }
-        }
-      }
+  public static String getWorkingDirectory( Project aProject ) {
+    if ( aProject != null ) {
+      VirtualFile baseDir = aProject.getBaseDir();
+      return baseDir != null && buildfilePresent( baseDir ) ? baseDir.getPath() : null;
     }
 
-    VirtualFile baseDir = aProject.getBaseDir();
-    if ( baseDir != null ) {
-      if ( buildfilePresent( baseDir ) ) {
-        return baseDir.getPath();
+    return null;
+  }
+
+  public static String getWorkingDirectory( Module aModule ) {
+    if ( aModule != null ) {
+      VirtualFile[] roots = ModuleRootManager.getInstance( aModule ).getContentRoots();
+      for ( int j = 0; j < roots.length; j++ ) {
+        VirtualFile root = roots[ j ];
+        if ( buildfilePresent( root ) ) {
+          return root.getPath();
+        }
       }
     }
 

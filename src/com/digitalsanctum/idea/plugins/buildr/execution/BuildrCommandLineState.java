@@ -20,7 +20,7 @@ public class BuildrCommandLineState extends CommandLineState {
   @Override
   protected OSProcessHandler startProcess() throws ExecutionException {
     BuildrRunSettings config = ( BuildrRunSettings ) getRunnerSettings().getRunProfile();
-    GeneralCommandLine commandLine = Buildr.createCommandLine( Buildr.getWorkingDirectory( config.getProject(), config.getModule() ), config.getTasks() );
+    GeneralCommandLine commandLine = Buildr.createCommandLine( config.getWorkingDirectory(), config.getTasks() );
     if ( commandLine != null ) {
       return new OSProcessHandler( commandLine.createProcess(), commandLine.getCommandLineString() );
     }

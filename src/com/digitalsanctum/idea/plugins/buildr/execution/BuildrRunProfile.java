@@ -20,13 +20,11 @@ import java.util.List;
  *
  */
 public class BuildrRunProfile implements RunProfile, BuildrRunSettings {
-  private final Project project;
-  private final Module module;
+  private final String workingDirectory;
   private final List<String> tasks;
 
-  public BuildrRunProfile( Project aProject, Module aModule, List<String> aTasks ) {
-    project = aProject;
-    module = aModule;
+  public BuildrRunProfile( String aWorkingDirectory, List<String> aTasks ) {
+    workingDirectory = aWorkingDirectory;
     tasks = aTasks;
   }
 
@@ -47,12 +45,8 @@ public class BuildrRunProfile implements RunProfile, BuildrRunSettings {
     return Buildr.BUILDR_16;
   }
 
-  public Module getModule() {
-    return module;
-  }
-
-  public Project getProject() {
-    return project;
+  public String getWorkingDirectory() {
+    return workingDirectory;
   }
 
   public List<String> getTasks() {

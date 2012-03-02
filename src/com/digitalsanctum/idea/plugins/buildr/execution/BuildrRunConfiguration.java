@@ -57,15 +57,19 @@ public class BuildrRunConfiguration extends RunConfigurationBase implements RunP
   }
 
   public void checkConfiguration() throws RuntimeConfigurationException {
-    String workingDirectory = Buildr.getWorkingDirectory( getProject(), getModule() );
+    String workingDirectory = getWorkingDirectory();
     if ( workingDirectory == null ) {
-      throw new RuntimeConfigurationException( "Cannot find buildfile" );
+      throw new RuntimeConfigurationException( "Cannot find buildfile location" );
     }
 
     GeneralCommandLine commandLine = Buildr.createCommandLine( workingDirectory );
     if ( commandLine == null ) {
-      throw new RuntimeConfigurationException( "Buildr not configure correctly" );
+      throw new RuntimeConfigurationException( "Buildr not configured correctly" );
     }
+  }
+
+  public String getWorkingDirectory() {
+    return getModule() != null ? Buildr.getWorkingDirectory( getModule() ) : Buildr.getWorkingDirectory( getProject() );
   }
 
   public List<String> getTasks() {

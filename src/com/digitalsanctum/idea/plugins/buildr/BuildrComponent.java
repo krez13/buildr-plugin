@@ -3,6 +3,7 @@ package com.digitalsanctum.idea.plugins.buildr;
 import com.digitalsanctum.idea.plugins.buildr.execution.BuildrRunProfile;
 import com.digitalsanctum.idea.plugins.buildr.execution.BuildrTasksPane;
 import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
+import com.intellij.ProjectTopics;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Output;
 import com.intellij.execution.OutputListener;
@@ -18,14 +19,18 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModuleRootEvent;
+import com.intellij.openapi.roots.ModuleRootListener;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.SwingUtilities;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +53,7 @@ public class BuildrComponent implements ProjectComponent {
   private ToolWindow buildrToolWindow;
   private BuildrTasksPane buildrTasksPane;
   private ContentFactory contentFactory;
+  private MessageBusConnection messageBusConnection;
 
   public BuildrComponent( Project project ) {
     this.project = project;
@@ -56,9 +62,26 @@ public class BuildrComponent implements ProjectComponent {
   public void projectOpened() {
     ToolWindowManager toolWindowManager = ToolWindowManager.getInstance( this.project );
     initBuildrToolWindow( toolWindowManager );
+
+    messageBusConnection = this.project.getMessageBus().connect();
+    messageBusConnection.subscribe( ProjectTopics.PROJECT_ROOTS, new ModuleRootListener() {
+      public void beforeRootsChange( ModuleRootEvent aModuleRootEvent ) {
+      }
+
+      public void rootsChanged( ModuleRootEvent aModuleRootEvent ) {
+        SwingUtilities.invokeLater( new Runnable() {
+          public void run() {
+            buildrTasksPane.refresh();
+          }
+        } );
+      }
+    } );
   }
 
   public void projectClosed() {
+    messageBusConnection.dispose();
+    messageBusConnection = null;
+
     ToolWindowManager toolWindowManager = ToolWindowManager.getInstance( project );
     toolWindowManager.unregisterToolWindow( BUILDR_TOOL_WINDOW_ID );
   }
@@ -78,12 +101,16 @@ public class BuildrComponent implements ProjectComponent {
     this.buildrTasksPane.refreshTaskList();
   }
 
-  public void runSelectedTask() {
-    runTask( this.buildrTasksPane.getModule(), this.buildrTasksPane.getCommand() );
+  public boolean canRefreshTaskList() {
+    return null != buildrTasksPane && buildrTasksPane.getWorkingDirectory() != null;
   }
 
-  public boolean isTaskSelected() {
-    return null != this.buildrTasksPane && this.buildrTasksPane.isTaskSelected();
+  public void runSelectedTask() {
+    runTask( this.buildrTasksPane.getWorkingDirectory(), this.buildrTasksPane.getCommand() );
+  }
+
+  public boolean canRunSelectedTask() {
+    return null != buildrTasksPane && buildrTasksPane.getWorkingDirectory() != null && buildrTasksPane.isTaskSelected();
   }
 
   private ContentFactory getContentFactory() {
@@ -109,8 +136,8 @@ public class BuildrComponent implements ProjectComponent {
     }
   }
 
-  public void runTask( @Nullable Module module, @NotNull List<String> tasks ) {
-    BuildrRunProfile configuration = new BuildrRunProfile( project, module, tasks );
+  public void runTask( @Nullable String workindDirectory, @NotNull List<String> tasks ) {
+    BuildrRunProfile configuration = new BuildrRunProfile( workindDirectory, tasks );
     final ProgramRunner runner = RunnerRegistry.getInstance().findRunnerById( DefaultRunExecutor.EXECUTOR_ID );
 
     assert runner != null;
@@ -136,7 +163,7 @@ public class BuildrComponent implements ProjectComponent {
 
   public List<BuildrTask> getAvailableTasks( @Nullable Module aModule ) {
     try {
-      String workingDirectory = getWorkingDirectory( project, aModule );
+      String workingDirectory = aModule != null ? getWorkingDirectory( aModule ) : getWorkingDirectory( project );
       GeneralCommandLine commandLine = createCommandLine( workingDirectory, "help:tasks" );
 
       if ( workingDirectory != null && commandLine != null ) {
