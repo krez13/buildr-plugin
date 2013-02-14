@@ -3,12 +3,11 @@ package com.digitalsanctum.idea.plugins.buildr.execution;
 import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
-import com.intellij.execution.configurations.ConfigurationTypeUtil;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.Icon;
+import javax.swing.*;
 
 /**
  * User: steve
@@ -22,10 +21,6 @@ public class BuildrConfigurationType implements ConfigurationType {
       return new BuildrRunConfiguration( "", project, this );
     }
   };
-
-  public static BuildrConfigurationType getInstance() {
-    return ConfigurationTypeUtil.findConfigurationType( BuildrConfigurationType.class );
-  }
 
   public String getDisplayName() {
     return "Buildr";
@@ -48,9 +43,5 @@ public class BuildrConfigurationType implements ConfigurationType {
     return new ConfigurationFactory[]{
         myConfigurationFactory
     };
-  }
-
-  public ConfigurationFactory getConfigurationFactory() {
-    return myConfigurationFactory;
   }
 }

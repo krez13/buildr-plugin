@@ -21,6 +21,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootEvent;
 import com.intellij.openapi.roots.ModuleRootListener;
+import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -30,7 +31,7 @@ import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -124,7 +125,7 @@ public class BuildrComponent implements ProjectComponent {
     if ( buildrToolWindow == null ) {
       buildrToolWindow = toolWindowManager.registerToolWindow( BUILDR_TOOL_WINDOW_ID, false,
                                                                ToolWindowAnchor.RIGHT );
-      buildrToolWindow.setIcon( BUILDR_16 );
+      buildrToolWindow.setIcon( BUILDR_13 );
 
       if ( buildrTasksPane == null ) {
         buildrTasksPane = new BuildrTasksPane( this );
@@ -145,7 +146,7 @@ public class BuildrComponent implements ProjectComponent {
     final ExecutionEnvironment env = new ExecutionEnvironment(
         configuration,
         project,
-        new RunnerSettings( null, configuration ),
+        new RunnerSettings<JDOMExternalizable>( null, configuration ),
         new ConfigurationPerRunnerSettings( runner.getRunnerId(), null ),
         null
     );

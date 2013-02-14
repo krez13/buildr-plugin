@@ -1,18 +1,23 @@
 <!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
-<idea-plugin url="http://www.digitalsanctum.com/buildr-plug-in/">
-  <id>Buildr</id>
-  <name>Buildr</name>
+<idea-plugin version="2" url="http://www.digitalsanctum.com/buildr-plug-in/">
+  <id>BuildrPlugin</id>
+  <name>Buildr Plugin</name>
   <category>Build</category>
   <description>
-    <![CDATA[An IntelliJ IDEA plug-in for Apache Buildr. You must <a href="http://buildr.apache.org/installing.html">install Buildr</a> prior to installing the plug-in. Special thanks to Pepijn Van Eeckhoudt and Steve Blundy for contributions.]]></description>
-  <version>11.0-2012.03.02-luciad</version>
+    <![CDATA[Plug-in for Apache Buildr. You must install <a href="http://buildr.apache.org/installing.html">Buildr</a> in order to use this plug-in.
+
+    This plugin is a fork of the original Buildr plugin created by Shane Whitbeck.]]></description>
+  <version>12.0-2013.02.14</version>
   <change-notes>
-    <![CDATA[ <a href="https://github.com/digitalsanctum/buildr-plugin/commits/master">Change log</a> ]]></change-notes>
-  <vendor email="shane@digitalsanctum.com"
+    <![CDATA[ <a href="https://github.com/pepijnve/buildr-plugin/commits/master">Change log</a> ]]></change-notes>
+  <vendor email="pepijn@vaneeckhoudt.net"
           logo="/com/digitalsanctum/idea/plugins/buildr/buildr-16x16.png"
-          url="http://www.digitalsanctum.com/">Digital Sanctum, Inc.
+          url="https://github.com/pepijnve/buildr-plugin">Digital Sanctum, Inc.
   </vendor>
-  <idea-version since-build="107.777"/>
+
+  <idea-version since-build="123"/>
+  <depends>com.intellij.modules.platform</depends>
+
   <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -35,12 +40,16 @@
 
   <actions>
     <group id="taskListToolbar">
-      <action id="refreshTaskList" class="com.digitalsanctum.idea.plugins.buildr.actions.RefreshTaskListAction"
+      <action id="refreshTaskList"
+              class="com.digitalsanctum.idea.plugins.buildr.actions.RefreshTaskListAction"
+              text="Refresh"
               icon="/actions/sync.png"/>
     </group>
 
     <group id="commandToolbar">
-      <action id="runTask" class="com.digitalsanctum.idea.plugins.buildr.actions.RunTaskAction"
+      <action id="runTask"
+              class="com.digitalsanctum.idea.plugins.buildr.actions.RunTaskAction"
+              text="Run"
               icon="/actions/execute.png"/>
     </group>
   </actions>

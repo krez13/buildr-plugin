@@ -8,12 +8,11 @@ import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.configurations.RuntimeConfigurationException;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -33,7 +32,12 @@ public class BuildrRunProfile implements RunProfile, BuildrRunSettings {
 
   public RunProfileState getState( @NotNull Executor aExecutor, @NotNull ExecutionEnvironment environment ) throws ExecutionException {
     final BuildrCommandLineState state = new BuildrCommandLineState( environment );
-    state.setConsoleBuilder( TextConsoleBuilderFactory.getInstance().createBuilder( environment.getProject() ) );
+    Project project = environment.getProject();
+    if ( project != null ) {
+      state.setConsoleBuilder( TextConsoleBuilderFactory.getInstance().createBuilder( project ) );
+    } else {
+      throw new ExecutionException( "Project not available" );
+    }
     return state;
   }
 

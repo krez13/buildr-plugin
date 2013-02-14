@@ -6,6 +6,7 @@ import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * User: steve
@@ -17,6 +18,7 @@ public class BuildrCommandLineState extends CommandLineState {
     super( environment );
   }
 
+  @NotNull
   @Override
   protected OSProcessHandler startProcess() throws ExecutionException {
     BuildrRunSettings config = ( BuildrRunSettings ) getRunnerSettings().getRunProfile();

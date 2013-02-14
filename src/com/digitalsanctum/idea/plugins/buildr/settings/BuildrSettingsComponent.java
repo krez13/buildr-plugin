@@ -1,6 +1,5 @@
 package com.digitalsanctum.idea.plugins.buildr.settings;
 
-import com.digitalsanctum.idea.plugins.buildr.Buildr;
 import com.digitalsanctum.idea.plugins.buildr.BuildrBundle;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.options.Configurable;
@@ -51,16 +50,6 @@ public class BuildrSettingsComponent implements ApplicationComponent, Configurab
   @Nls
   public String getDisplayName() {
     return BuildrBundle.message("settings.title");
-  }
-
-  /**
-   * Returns the icon representing the settings component. Components
-   * shown in the IDEA settings dialog have 32x32 icons.
-   *
-   * @return the icon for the component.
-   */
-  public Icon getIcon() {
-    return Buildr.BUILDR_32;
   }
 
   /**

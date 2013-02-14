@@ -17,7 +17,6 @@ package com.digitalsanctum.idea.plugins.buildr.execution;
  */
 
 import com.digitalsanctum.idea.plugins.buildr.Buildr;
-import com.intellij.ide.ui.ListCellRendererWrapper;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleType;
@@ -25,10 +24,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.ComboboxSpeedSearch;
+import com.intellij.ui.ListCellRendererWrapper;
 import com.intellij.ui.SortedComboBoxModel;
 
-import javax.swing.JComboBox;
-import javax.swing.JList;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -63,7 +62,7 @@ class ModuleSelector {
       }
     };
     myModulesList.setModel( myModules );
-    myModulesList.setRenderer( new ListCellRendererWrapper( myModulesList.getRenderer() ) {
+    myModulesList.setRenderer( new ListCellRendererWrapper() {
       @Override
       public void customize( final JList list, final Object value, final int index, final boolean selected, final boolean hasFocus ) {
         if ( value instanceof Module ) {
