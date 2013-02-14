@@ -1,5 +1,5 @@
 <!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
-<idea-plugin version="2" url="http://www.digitalsanctum.com/buildr-plug-in/">
+<idea-plugin version="2" url="https://github.com/pepijnve/buildr-plugin">
   <id>BuildrPlugin</id>
   <name>Buildr Plugin</name>
   <category>Build</category>
@@ -7,15 +7,14 @@
     <![CDATA[Plug-in for Apache Buildr. You must install <a href="http://buildr.apache.org/installing.html">Buildr</a> in order to use this plug-in.
 
     This plugin is a fork of the original Buildr plugin created by Shane Whitbeck.]]></description>
-  <version>12.0-2013.02.14</version>
+  <version>12.0.1</version>
   <change-notes>
     <![CDATA[ <a href="https://github.com/pepijnve/buildr-plugin/commits/master">Change log</a> ]]></change-notes>
   <vendor email="pepijn@vaneeckhoudt.net"
           logo="/com/digitalsanctum/idea/plugins/buildr/buildr-16x16.png"
-          url="https://github.com/pepijnve/buildr-plugin">Digital Sanctum, Inc.
-  </vendor>
+          url="https://github.com/pepijnve/buildr-plugin">Pepijn Van Eeckhoudt</vendor>
 
-  <idea-version since-build="123"/>
+  <idea-version since-build="123.0"/>
   <depends>com.intellij.modules.platform</depends>
 
   <resource-bundle xmlns="">com.digitalsanctum.idea.plugins.buildr.BuildrBundle</resource-bundle>
