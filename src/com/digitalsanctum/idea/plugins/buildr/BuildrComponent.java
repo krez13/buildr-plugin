@@ -8,20 +8,20 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Output;
 import com.intellij.execution.OutputListener;
 import com.intellij.execution.RunnerRegistry;
-import com.intellij.execution.configurations.ConfigurationPerRunnerSettings;
 import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.RunnerSettings;
 import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootEvent;
 import com.intellij.openapi.roots.ModuleRootListener;
-import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -40,11 +40,6 @@ import java.util.regex.Pattern;
 
 import static com.digitalsanctum.idea.plugins.buildr.Buildr.*;
 
-/**
- * User: sblundy
- * Date: Jan 3, 2010
- * Time: 9:13:34 PM
- */
 public class BuildrComponent implements ProjectComponent {
   private static final Logger LOG = Logger.getInstance( BuildrComponent.class );
 
@@ -137,22 +132,21 @@ public class BuildrComponent implements ProjectComponent {
     }
   }
 
-  public void runTask( @Nullable String workindDirectory, @NotNull List<String> tasks ) {
-    BuildrRunProfile configuration = new BuildrRunProfile( workindDirectory, tasks );
+  public void runTask( @Nullable String workingDirectory, @NotNull List<String> tasks ) {
+    BuildrRunProfile configuration = new BuildrRunProfile( workingDirectory, tasks );
     final ProgramRunner runner = RunnerRegistry.getInstance().findRunnerById( DefaultRunExecutor.EXECUTOR_ID );
 
     assert runner != null;
 
     final ExecutionEnvironment env = new ExecutionEnvironment(
         configuration,
+        DefaultRunExecutor.getRunExecutorInstance(),
         project,
-        new RunnerSettings<JDOMExternalizable>( null, configuration ),
-        new ConfigurationPerRunnerSettings( runner.getRunnerId(), null ),
         null
     );
 
     try {
-      runner.execute( DefaultRunExecutor.getRunExecutorInstance(), env, null );
+      runner.execute( env, null );
     } catch ( ExecutionException e ) {
       LOG.error( e );
     }
@@ -174,7 +168,19 @@ public class BuildrComponent implements ProjectComponent {
         process.startNotify();
         process.waitFor( 30 * 1000 );
         Output output = outputListener.getOutput();
-        return parseTasks( output.getStdout() );
+        String stdout = output.getStdout();
+        String stderr = output.getStderr();
+
+        if (output.getExitCode() != 0 || (stderr != null && !stderr.isEmpty()) ) {
+          project.getMessageBus().syncPublisher( Notifications.TOPIC ).notify( new Notification(
+                  BuildrBundle.message( "notifications.groupDisplayId" ),
+                  BuildrBundle.message( "notifications.refreshErrorTitle" ),
+                  stderr,
+                  NotificationType.ERROR
+          ) );
+        } else {
+          return parseTasks( stdout );
+        }
       }
     } catch ( ExecutionException e ) {
       // Ignored

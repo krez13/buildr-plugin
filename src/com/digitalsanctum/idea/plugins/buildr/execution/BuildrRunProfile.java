@@ -5,7 +5,6 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.configurations.RuntimeConfigurationException;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.project.Project;
@@ -15,10 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.List;
 
-/**
- *
- */
-public class BuildrRunProfile implements RunProfile, BuildrRunSettings {
+public class BuildrRunProfile implements RunProfile {
   private final String workingDirectory;
   private final List<String> tasks;
 
@@ -27,17 +23,10 @@ public class BuildrRunProfile implements RunProfile, BuildrRunSettings {
     tasks = aTasks;
   }
 
-  public void checkConfiguration() throws RuntimeConfigurationException {
-  }
-
   public RunProfileState getState( @NotNull Executor aExecutor, @NotNull ExecutionEnvironment environment ) throws ExecutionException {
     final BuildrCommandLineState state = new BuildrCommandLineState( environment );
     Project project = environment.getProject();
-    if ( project != null ) {
-      state.setConsoleBuilder( TextConsoleBuilderFactory.getInstance().createBuilder( project ) );
-    } else {
-      throw new ExecutionException( "Project not available" );
-    }
+    state.setConsoleBuilder( TextConsoleBuilderFactory.getInstance().createBuilder( project ) );
     return state;
   }
 

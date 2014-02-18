@@ -8,11 +8,6 @@ import org.jetbrains.annotations.PropertyKey;
 import java.lang.ref.Reference;
 import java.util.ResourceBundle;
 
-/**
- * User: shane
- * Date: Nov 22, 2008
- * Time: 10:15:21 AM
- */
 public class BuildrBundle {
   private static Reference<ResourceBundle> ourBundle;
 

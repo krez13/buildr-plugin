@@ -5,11 +5,6 @@ import com.digitalsanctum.idea.plugins.buildr.model.BuildrTask;
 import javax.swing.*;
 import java.util.List;
 
-/**
-* User: sblundy
-* Date: Jan 8, 2010
-* Time: 9:42:08 PM
-*/
 class TaskListModel extends AbstractListModel {
     final List<BuildrTask> tasks = new java.util.ArrayList<BuildrTask>();
 

@@ -8,11 +8,6 @@ import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * User: steve
- * Date: Jan 5, 2010
- * Time: 9:15:45 PM
- */
 public class BuildrCommandLineState extends CommandLineState {
   public BuildrCommandLineState( ExecutionEnvironment environment ) {
     super( environment );
@@ -21,7 +16,7 @@ public class BuildrCommandLineState extends CommandLineState {
   @NotNull
   @Override
   protected OSProcessHandler startProcess() throws ExecutionException {
-    BuildrRunSettings config = ( BuildrRunSettings ) getRunnerSettings().getRunProfile();
+    BuildrRunProfile config = ( BuildrRunProfile ) getEnvironment().getRunProfile();
     GeneralCommandLine commandLine = Buildr.createCommandLine( config.getWorkingDirectory(), config.getTasks() );
     if ( commandLine != null ) {
       return new OSProcessHandler( commandLine.createProcess(), commandLine.getCommandLineString() );

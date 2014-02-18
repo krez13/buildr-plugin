@@ -1,22 +1,47 @@
 package com.digitalsanctum.idea.plugins.buildr.settings;
 
 import com.digitalsanctum.idea.plugins.buildr.BuildrBundle;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.io.File;
 
-/**
- * User: shane
- * Date: Nov 22, 2008
- * Time: 10:49:49 AM
- */
-public class BuildrSettingsComponent implements ApplicationComponent, Configurable {
+@State(
+        name = "BuildrSettings",
+        storages = {
+                @Storage(
+                        id = "main",
+                        file = "$APP_CONFIG$/buildrsettings.xml"
+                )
+        }
+)
+public class BuildrSettings implements ApplicationComponent, Configurable, PersistentStateComponent<BuildrSettings.State> {
+  public static class State {
+    public String buildrPath = "";
 
-  private BuildrSettingsPane form;
+    public State() {
+    }
+  }
+
+  private State state;
+  private GeneralSettingsTab form;
+
+  public static BuildrSettings getInstance() {
+    return ApplicationManager.getApplication().getComponent( BuildrSettings.class );
+  }
+
+  public BuildrSettings() {
+    state = new State();
+  }
 
   /**
    * Unique name of this component. If there is another component with the same name or
@@ -26,14 +51,13 @@ public class BuildrSettingsComponent implements ApplicationComponent, Configurab
    */
   @NotNull
   public String getComponentName() {
-    return "BuildrSettingsComponent";
+    return "BuildrSettings";
   }
 
   /**
    * Component should do initialization and communication with another components in this method.
    */
   public void initComponent() {
-    loadRegisteredData();
   }
 
   /**
@@ -69,9 +93,9 @@ public class BuildrSettingsComponent implements ApplicationComponent, Configurab
    */
   public JComponent createComponent() {
     if (form == null) {
-      form = new BuildrSettingsPane();
+      form = new GeneralSettingsTab();
     }
-    return form.getPanel();
+    return form.getContentPanel();
   }
 
   /**
@@ -112,7 +136,27 @@ public class BuildrSettingsComponent implements ApplicationComponent, Configurab
     form = null;
   }
 
-  private void loadRegisteredData() {
-// todo   
+  @Nullable
+  @Override
+  public State getState() {
+    return state;
+  }
+
+  @Override
+  public void loadState( State state ) {
+    this.state = state;
+  }
+
+  public String getBuildrPath() {
+    return state.buildrPath;
+  }
+
+  public void setBuildrPath(String buildrPath) {
+    state.buildrPath = buildrPath;
+  }
+
+  public boolean isValidBuildrPath(String buildrPath) {
+    File executable = new File(buildrPath);
+    return executable.exists() && executable.isFile() && executable.getName().startsWith("buildr");
   }
 }

@@ -1,6 +1,6 @@
 package com.digitalsanctum.idea.plugins.buildr;
 
-import com.digitalsanctum.idea.plugins.buildr.settings.BuildrApplicationSettings;
+import com.digitalsanctum.idea.plugins.buildr.settings.BuildrSettings;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
@@ -13,11 +13,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * User: shane
- * Date: Feb 3, 2008
- * Time: 8:38:54 AM
- */
 public final class Buildr {
   public static final String[] BUILDFILES = { "buildfile", "Buildfile", "rakefile", "Rakefile", "rakefile.rb", "Rakefile.rb" };
 
@@ -55,17 +50,11 @@ public final class Buildr {
       return null;
     }
 
-    final BuildrApplicationSettings settings = BuildrApplicationSettings.getInstance();
+    final BuildrSettings settings = BuildrSettings.getInstance();
 
     GeneralCommandLine commandLine = new GeneralCommandLine();
 
-    if ( settings.getBundlerEnabled() ) {
-      commandLine.setExePath( settings.getBundlerPath() );
-      commandLine.addParameters( "exec", "buildr" );
-    }
-    else {
-      commandLine.setExePath( settings.getBuildrPath() );
-    }
+    commandLine.setExePath( settings.getBuildrPath() );
 
     if ( !new File( commandLine.getExePath() ).canExecute() ) {
       return null;
@@ -88,8 +77,7 @@ public final class Buildr {
   public static String getWorkingDirectory( Module aModule ) {
     if ( aModule != null ) {
       VirtualFile[] roots = ModuleRootManager.getInstance( aModule ).getContentRoots();
-      for ( int j = 0; j < roots.length; j++ ) {
-        VirtualFile root = roots[ j ];
+      for ( VirtualFile root : roots ) {
         if ( buildfilePresent( root ) ) {
           return root.getPath();
         }

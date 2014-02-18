@@ -20,12 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by IntelliJ IDEA.
- * User: shane
- * Date: Nov 26, 2008
- * Time: 7:09:45 AM
- */
 public class BuildrTasksPane {
   private JPanel tasksPanel;
   private JTextField commandTextField;
@@ -116,7 +110,6 @@ public class BuildrTasksPane {
             }
           }
         } );
-
       }
     }.queue();
   }
